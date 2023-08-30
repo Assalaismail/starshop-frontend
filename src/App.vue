@@ -1,17 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <NavbarHeader/>
+    <CarouselSlide/>
+    <RegisterUser/>
+    <LoginUser/>
+    <RouterView />
+
+  </div>
+
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+import NavbarHeader from './components/NavbarHeader.vue';
+import CarouselSlide from './components/CarouselSlide.vue'
+import RegisterUser from './components/RegisterUser.vue';
+import LoginUser from './components/LoginUser.vue';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+
+// export default {
+//   name: 'App',
+//   components: {
+//     NavbarHeader,
+//     CarouselSlide,
+    
+//   }
+// }
 </script>
 
 <style>
@@ -21,6 +34,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 40px;
 }
 </style>
+
+
+
+
+
