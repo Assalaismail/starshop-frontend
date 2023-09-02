@@ -42,9 +42,9 @@
           />
           <label for="password" class="label-register">Phone Number:</label>
           <input
-            type="password"
-            id="password"
-            name="password"
+            type="text"
+            id="phoneNumber"
+            name="phoneNumber"
             class="input-register"
             placeholder="Please enter your phone number"
             v-model="phoneNumber"
@@ -130,7 +130,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 70vh;
 }
 
 .border-reg {

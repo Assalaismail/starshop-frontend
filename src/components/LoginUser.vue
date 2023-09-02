@@ -10,22 +10,23 @@
             type="email"
             id="email"
             name="email"
-            class="input-login"
+            class="input-login-email"
             placeholder="Please enter your email"
             v-model="email"
           />
           <label for="password" class="label-login">Password:</label>
-          <div  class="input-login">
-          <input
-            type="password"
-            id="password"
-            name="password"
-            class="input-pass"
-            placeholder="Please enter your password" 
-            v-model="password"
-          />
-          <a href="#" class="forgot-pass">Forgot Password?</a>
-          </div>
+          <div class="input-login">
+  <input
+    type="password"
+    id="password"
+    name="password"
+    class="input-pass"
+    placeholder="Please enter your password" 
+    v-model="password"
+  />
+  <a href="#" class="forgot-pass">Forgot Password?</a>
+</div>
+
 
           <div class="btn-login">
             <p class="acc">Don't have an account? <a href="/register" class="acc-login">Create one</a></p>
@@ -80,7 +81,7 @@
               icon: "success",
             }).then(() => {
               localStorage.setItem("token", response.data.token);
-              window.location.href = "/login";
+              window.location.href = "/";
             });
           } else {
             swal({
@@ -102,7 +103,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 70vh;
 }
 
 .border-log {
@@ -132,25 +133,35 @@
   margin-bottom: 35px;
 }
 
+.input-login-email {
+  position: relative;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 12px;
+}
 .input-login {
+  position: relative;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  margin-bottom: 12px;
+}
+
+.input-pass {
+  width: -webkit-fill-available;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 12px;
 }
 
-.input-pass{
-    border: none;
-    text-align: initial;
-  
+.forgot-pass {
+  /* position: absolute; */
+  margin-top: 10px;
+  font-size: 14px;
+  color: #6d6c6c;
 }
 
-.forgot-pass{
- font-size: 14px;
- margin-left: 95px;
- text-decoration: none;
- color: #6d6c6c;
-}
 .acc{
   display: flex;
   flex-direction: row;
@@ -169,7 +180,6 @@
 .btn-login{
   display: flex;
   flex-direction: row;
-  margin-top: 20px;
   gap: 5.7rem;
 }
 .button-login {
@@ -179,7 +189,6 @@
   border-radius: 50px;
   cursor: pointer;
   font-size: 16px;
-
 }
 
 .button-login:hover {

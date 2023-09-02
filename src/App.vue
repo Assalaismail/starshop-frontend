@@ -1,30 +1,21 @@
 <template>
   <div id="app">
-    <NavbarHeader/>
-    <CarouselSlide/>
-    <RegisterUser/>
-    <LoginUser/>
     <RouterView />
-
   </div>
-
 </template>
 
 <script setup>
-import NavbarHeader from './components/NavbarHeader.vue';
-import CarouselSlide from './components/CarouselSlide.vue'
-import RegisterUser from './components/RegisterUser.vue';
-import LoginUser from './components/LoginUser.vue';
+import { RouterView } from 'vue-router';
 
+</script>
 
-// export default {
-//   name: 'App',
-//   components: {
-//     NavbarHeader,
-//     CarouselSlide,
-    
-//   }
-// }
+<script>
+
+export default {
+  components: {
+    RouterView,
+  },
+};
 </script>
 
 <style>
@@ -37,8 +28,3 @@ import LoginUser from './components/LoginUser.vue';
   margin-top: 40px;
 }
 </style>
-
-
-
-
-

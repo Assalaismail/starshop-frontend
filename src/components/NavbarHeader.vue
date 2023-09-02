@@ -20,7 +20,7 @@
       <div class="right-section">
         <ul class="nav-links-right">
           <li>
-            <router-link to="/register">
+            <router-link to="/login">
           <i class="fas fa-sign-in-alt"></i>
           Login
         </router-link>

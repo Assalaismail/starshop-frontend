@@ -1,33 +1,64 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+// import { createApp } from 'vue'
+// import { createRouter, createWebHistory } from 'vue-router'
 
-createApp(App).mount('#app')
+// import App from './App.vue'
+// import HomePageLandingPage from './components/HomePageLandingPage.vue'
+// import LoginUser from './components/LoginUser.vue'
+// import RegisterUser from './components/RegisterUser.vue'
 
-
-
-
-
-
-// import Vue from 'vue';
-// import App from './App.vue';
-// import VueRouter from 'vue-router';
-// import RegisterUser from './components/RegisterUser.vue'; // Import your Register component
-
-// Vue.config.productionTip = false;
-
-// Vue.use(VueRouter);
-
-// const routes = [
-//   { path: '/register', component: RegisterUser }, // Add a route for the Register component
-//   // Add other routes if needed
-// ];
-
-// const router = new VueRouter({
-//   routes,
-//   mode: 'history', // Use 'history' mode for clean URLs
+// const router = createRouter({
+//     history: createWebHistory(),
+//     routes: [
+//         { path: '/', component: HomePageLandingPage },
+//         { path: '/login', component: LoginUser },
+//         { path: '/register', component: RegisterUser },
+//     ]
 // });
 
-// new Vue({
-//   router,
-//   render: (h) => h(App),
-// }).$mount('#app');
+// const app = createApp(App)
+
+// app.use(router);
+
+
+// app.mount('#app')
+
+
+
+
+import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router';
+
+import App from './App.vue';
+import LayoutLayout from './Pages/LayoutLayout.vue';
+import HomePageLandingPage from './components/HomePageLandingPage.vue';
+import LoginUser from './components/LoginUser.vue';
+import RegisterUser from './components/RegisterUser.vue';
+import ContactUs from './components/ContactUs.vue'
+
+const routes = [
+  {
+    path: '/',
+    component: LayoutLayout, 
+    children: [
+      { path: '', component: HomePageLandingPage },
+      { path: 'login', component: LoginUser },
+      { path: 'register', component: RegisterUser },
+      { path: 'contact', component: ContactUs },
+    ],
+  },
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+
+const app = createApp(App)
+
+app.use(router);
+
+
+app.mount('#app')
+
+
+export default router;

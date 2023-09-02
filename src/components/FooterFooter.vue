@@ -1,8 +1,7 @@
 <template>
-    <footer>
       <main class="footer-main">
         <section class="clmn-1">
-          <h1><plaintext>SOCIAL MEDIA LINKS</plaintext></h1>
+          <h4>SOCIAL MEDIA LINKS</h4>
           <div class="media-icons-wrapper">
             <div class="icons-wrapper">
               <div class="icn-wrap">
@@ -31,27 +30,28 @@
         </section>
   
         <section class="clmn-2">
-          <h1>Products</h1>
-          <ul>
-            <li><a href="/">hiii</a></li>
-            <li><a href="/">Hello</a></li>
-            <li><a href="/"></a></li>
+          <h4>CUSTOMER SERVICES</h4>
+          <ul class="services">
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/terms">Terms & Conditions</a></li>
           </ul>
         </section>
   
         <section class="clmn-4">
-          <h1>Contact</h1>
-          <ul>
-            <li>Lebanon, Beirut Downtown</li>
-            <li><a href="/contactus">Mail us</a></li>
-            <li><a href="">WhatsApp</a></li>
+          <h4>ADDRESS & CONTACT</h4>
+          <ul class="address-contact">
+            <li><span>Beirut:</span> STARSHOP S.a.r.l. Lebanon, Beirut Downtown</li>
+            <li><span>Hotline:</span> +961 3123456</li>
+            <li><span>Email:</span> info@starshop.com</li>
           </ul>
         </section>
       </main>
       <p class="copyright">
         Copyright © 2023 All rights reserved
       </p>
-    </footer>
+
   </template>
   
   <script>
@@ -79,24 +79,18 @@
   </script>
   
   <style scoped>
-  footer {
-    letter-spacing: 0.27em;
-    height: 35dvh;
-    /* background-color: lightpink; */
-    color: white;
-    width: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-  }
   .footer-main {
     width: 90%;
     height: 100%;
     margin: 0 auto;
     display: flex;
-    justify-content: space-evenly;
     align-items: center;
-    gap: 20px;
+    gap: 7rem;
+    height: 30dvh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+
   }
   
   .footer-main section {
@@ -106,17 +100,13 @@
     grid-template-rows: 70px auto;
   }
   
-  .footer-main h1 {
-    font-size: clamp(0.75rem, 0.3023rem + 1vw, 2.125rem);
-    color: white;
+  .footer-main h4 {
+    font-size: 19px;
+    color: black;
   }
   
-  .clmn-1 h1 {
-    color: white;
-  }
-  
-  plaintext {
-    margin: 0;
+  .clmn-1 h4 {
+    color: black;
   }
   
   .icons-wrapper {
@@ -146,8 +136,7 @@
   }
   
   .icn-wrap:hover {
-    background-color: white;
-    
+    background-color: #e1b01f;
     outline: none;
   }
   
@@ -156,35 +145,50 @@
   }
   
   .footer-main section ul li {
-    font-size: clamp(0.5625rem, 0.4618rem + 0.5034vw, 1.5rem);
+    font-size: 14px;
+    margin-bottom: inherit;
   }
   
   .footer-main section ul li a {
     transition: 0.3s all ease;
   }
   .footer-main section ul li a:hover {
-    color: purple;
+    color:#737373;
     outline: none;
   }
   
   .copyright {
-    position: absolute;
-    bottom: 3%;
+    
     color: rgb(136, 136, 136);
     font-size: small;
     text-align: center;
   }
   ul li {
     list-style: none;
+    padding-left: 0%;
   }
   a {
     text-decoration: none;
-    color: purple;
+    color: black;
   }
   .footer-main a {
     text-decoration: none;
   }
-      
+
+  .services{
+    text-align: start;
+    padding-left: 0px;
+  }
+
+  .address-contact{
+    width: 200px;
+    padding-left: 0px;
+    text-align: start;
+  }
+    
+  .address-contact span{
+    font-weight: 600;
+  }
   
   @media all and (max-width: 476px) {
     .footer-main {
