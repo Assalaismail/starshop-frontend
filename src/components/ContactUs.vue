@@ -35,7 +35,7 @@
                     required
                 />
             </div>
-        </div>
+          </div>
 
         <div class="input-row">
             <div class="input-container">
@@ -187,7 +187,6 @@ margin-top: 30px;
 
 .send{
   display: flex;
-
 }
 .button-send {
   background-color: white;
@@ -204,7 +203,6 @@ margin-top: 30px;
 .button-send:hover {
   background-color:#787d83;
   color: white;
-
 }
 
 </style>
