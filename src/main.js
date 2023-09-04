@@ -34,6 +34,7 @@ import HomePageLandingPage from './components/HomePageLandingPage.vue';
 import LoginUser from './components/LoginUser.vue';
 import RegisterUser from './components/RegisterUser.vue';
 import ContactUs from './components/ContactUs.vue'
+import WishlistProduct from './components/WishlistProduct.vue'
 
 const routes = [
   {
@@ -44,6 +45,7 @@ const routes = [
       { path: 'login', component: LoginUser },
       { path: 'register', component: RegisterUser },
       { path: 'contact', component: ContactUs },
+      { path: 'wishlist', component: WishlistProduct },
     ],
   },
 ];

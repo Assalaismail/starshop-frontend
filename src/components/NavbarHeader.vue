@@ -35,36 +35,54 @@
         <div class="logo">
           <img src="@/assets/logo-star.png" alt="Logo" class="logo-img"/>
         </div>
-        <ul class="nav-links">
-          <!-- <li><a href="/" class="a">Home</a></li> -->
+        <!-- <ul class="nav-links">
 
           <li class="has-submenu">
             <a href="/Clothes" class="a">Clothes</a>
-            <!-- <ul class="submenu">
-              <li><a href="/clothes" class="a">Clothes</a></li>
-              <li><a href="/swimwear" class="a">Swimwear</a></li>
-              <li><a href="/accessories" class="a">Accessories</a></li>
-              <li><a href="/shoes" class="a">Shoes</a></li>
-            </ul> -->
           </li>
               <li><a href="/Swimwear" class="a">Swimwear</a></li>
               <li><a href="/Accessories" class="a">Accessories</a></li>
               <li><a href="/shoes" class="a">Shoes</a></li>
+        </ul> -->
+
+        <ul class="nav-links">
+          <li class="has-submenu" v-for="category in categories" v-bind:key="category">
+            <a  class="a">{{ category.data.name }}</a>
+          </li>
         </ul>
           <div class="cart-wish">
           <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-          <li class="wishlist-icon"><a href="#"><i class="fas fa-heart"></i></a></li>
+          <li class="wishlist-icon"><a href="/wishlist"><i class="fas fa-heart"></i></a></li>
         </div>
       </div>
     </nav>
-  </template>
+
+
+</template>
 
 <script>
 import "@fortawesome/fontawesome-free/css/all.css";
+import axios from "axios";
 
 export default {
-  // Component options
-};
+  data() {
+    return {
+      categories: [],
+    };
+  },
+  
+  mounted() {
+  axios
+    .get("http://127.0.0.1:8000/api/category")
+    .then((response) => {
+      console.log("API Response:", response.data); // Log the entire API response data
+      this.categories = response.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching data from API:", error);
+    });
+},
+}
 </script>
   
   <style scoped>
