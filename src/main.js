@@ -46,6 +46,7 @@ const routes = [
       { path: 'register', component: RegisterUser },
       { path: 'contact', component: ContactUs },
       { path: 'wishlist', component: WishlistProduct },
+      { path: '/category/:categoryName', component: HomePageLandingPage },
     ],
   },
 ];
