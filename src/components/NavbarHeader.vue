@@ -35,10 +35,19 @@
         <div class="logo">
           <img src="@/assets/logo-star.png" alt="Logo" class="logo-img"/>
         </div>
+        <!-- <ul class="nav-links">
 
-    <ul class="nav-links">
+          <li class="has-submenu">
+            <a href="/Clothes" class="a">Clothes</a>
+          </li>
+              <li><a href="/Swimwear" class="a">Swimwear</a></li>
+              <li><a href="/Accessories" class="a">Accessories</a></li>
+              <li><a href="/shoes" class="a">Shoes</a></li>
+        </ul> -->
+
+        <ul class="nav-links">
       <li class="has-submenu" v-for="category in categories" :key="category.id">
-        <router-link :to="{ name: 'category', params: { categoryName: category.slug } }" class="a">
+        <router-link :to="`/${category.slug}`" class="a">
           {{ category.name }}
         </router-link>
       </li>
@@ -62,7 +71,6 @@ export default {
   data() {
     return {
       categories: [],
-      subcategories: [],
     };
   },
   
@@ -70,37 +78,16 @@ export default {
     axios
       .get("http://127.0.0.1:8000/api/category")
       .then((response) => {
-        console.log("API Response:", response.data);
-        this.categories = response.data.data;
+        console.log("API Response:", response.data); // Log the entire API response data
+        this.categories = response.data.data; // Extract the "data" array from the response
       })
       .catch((error) => {
         console.error("Error fetching data from API:", error);
       });
   },
+}
 
-  watch: {
-    $route(to) {
-      const categoryName = to.params.categoryName;
-      if (categoryName) {
-        this.fetchSubcategories(categoryName);
-      }
-    },
-  },
 
-  methods: {
-    fetchSubcategories(categoryName) {
-      axios
-        .get(`http://127.0.0.1:8000/api/subcategoryname/${categoryName}`)
-        .then((response) => {
-          this.subcategories = response.data; // Assuming the API response contains subcategories data
-          console.log("Subcategories:", this.subcategories);
-        })
-        .catch((error) => {
-          console.error("Error fetching subcategories:", error);
-        });
-    },
-  },
-};
 </script>
   
   <style scoped>
