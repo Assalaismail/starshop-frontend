@@ -25,7 +25,7 @@
     name: "App",
     components: { CarouselImage, SlideImage},
     setup() {
-      const carouselSlides = ["image1", "image2", "image3"];
+      const carouselSlides = ["image3", "image2", "image1"];
   
       return { carouselSlides };
     },

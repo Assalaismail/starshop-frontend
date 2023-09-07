@@ -35,15 +35,6 @@
         <div class="logo">
           <img src="@/assets/logo-star.png" alt="Logo" class="logo-img"/>
         </div>
-        <!-- <ul class="nav-links">
-
-          <li class="has-submenu">
-            <a href="/Clothes" class="a">Clothes</a>
-          </li>
-              <li><a href="/Swimwear" class="a">Swimwear</a></li>
-              <li><a href="/Accessories" class="a">Accessories</a></li>
-              <li><a href="/shoes" class="a">Shoes</a></li>
-        </ul> -->
 
         <ul class="nav-links">
       <li class="has-submenu" v-for="category in categories" :key="category.id">
@@ -67,7 +58,6 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import axios from "axios";
 
 export default {
-  props: ["category_name"],
   data() {
     return {
       categories: [],
@@ -112,7 +102,11 @@ export default {
   .nav-links .a {
     text-decoration: none;
     padding-left: 200px;
-    font-weight: 700;
+    font-weight: 500;
+    color: #737373;
+  }
+
+  .nav-links .a:hover{
     color: black;
   }
 
@@ -148,15 +142,13 @@ export default {
   align-items: center;
 }
 
-.nav-links-left,
-.nav-links-right {
+.nav-links-left, .nav-links-right {
   list-style: none;
   display: flex;
   gap: 1rem;
 }
 
-.nav-links-left a,
-.nav-links-right a {
+.nav-links-left a, .nav-links-right a {
   text-decoration: none;
   color: grey;
 }
@@ -189,7 +181,6 @@ export default {
   flex-direction: row;
   padding-left: 0px;
 }
-
 .cart-wish li{
   list-style: none;
   

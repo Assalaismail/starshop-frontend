@@ -26,71 +26,109 @@
   </template>
   
   <script>
-  import { ref, onMounted } from "vue";
-  export default {
-    props: ["startAutoPlay", "timeout", "navigation", "pagination"],
-    setup(props) {
-      const currentSlide = ref(1);
-      const getSlideCount = ref(null);
-      const autoPlayEnabled = ref(
-        props.startAutoPlay === undefined ? true : props.startAutoPlay
-      );
-      const timeoutDuration = ref(props.timeout === undefined ? 5000 : props.timeout);
-      const pagintationEnabled = ref(
-        props.pagination === undefined ? true : props.pagination
-      );
-      const navEnabled = ref(props.navigation === undefined ? true : props.navigation);
-  
-      // next slide
-      const nextSlide = () => {
-        if (currentSlide.value === getSlideCount.value) {
-          currentSlide.value = 1;
-          return;
-        }
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+
+export default {
+  props: ["startAutoPlay", "timeout", "navigation", "pagination"],
+  setup(props) {
+    const currentSlide = ref(1);
+    const getSlideCount = ref(null);
+    const autoPlayEnabled = ref(
+      props.startAutoPlay === undefined ? true : props.startAutoPlay
+    );
+    const timeoutDuration = ref(
+      props.timeout === undefined ? 5000 : props.timeout
+    );
+    const paginationEnabled = ref(
+      props.pagination === undefined ? true : props.pagination
+    );
+    const navEnabled = ref(
+      props.navigation === undefined ? true : props.navigation
+    );
+
+    let autoplayInterval;
+
+    // Next slide
+    const nextSlide = () => {
+      if (currentSlide.value === getSlideCount.value) {
+        currentSlide.value = 1;
+      } else {
         currentSlide.value += 1;
-      };
-  
-      // prev slide
-      const prevSlide = () => {
-        if (currentSlide.value === 1) {
-          currentSlide.value = 1;
-          return;
-        }
+      }
+    };
+
+    // Previous slide
+    const prevSlide = () => {
+      if (currentSlide.value === 1) {
+        currentSlide.value = getSlideCount.value;
+      } else {
         currentSlide.value -= 1;
-      };
-  
-      const goToSlide = (index) => {
-        currentSlide.value = index + 1;
-      };
-  
-      // autoplay
-      const autoPlay = () => {
-        setInterval(() => {
+      }
+    };
+
+    // Go to a specific slide
+    const goToSlide = (index) => {
+      currentSlide.value = index + 1;
+    };
+
+    // Start autoplay
+    const startAutoplay = () => {
+      autoplayInterval = setInterval(() => {
+        nextSlide();
+      }, timeoutDuration.value);
+    };
+
+    // Stop autoplay
+    const stopAutoplay = () => {
+      clearInterval(autoplayInterval);
+    };
+
+    onMounted(() => {
+      getSlideCount.value = document.querySelectorAll(".slide").length;
+
+      if (autoPlayEnabled.value) {
+        startAutoplay();
+      }
+
+      // Pause autoplay when the component is not in view
+      window.addEventListener("blur", stopAutoplay);
+      window.addEventListener("focus", () => {
+        if (autoPlayEnabled.value) {
+          startAutoplay();
+        }
+      });
+    });
+
+    // Cleanup listeners when the component is unmounted
+    onBeforeUnmount(() => {
+      window.removeEventListener("blur", stopAutoplay);
+      window.removeEventListener("focus", startAutoplay);
+    });
+
+    // Watch currentSlide for changes and trigger next slide after a timeout
+    watch(currentSlide, () => {
+      if (autoPlayEnabled.value) {
+        setTimeout(() => {
           nextSlide();
         }, timeoutDuration.value);
-      };
-  
-      if (autoPlayEnabled.value) {
-        autoPlay();
       }
+    });
+
+    return {
+      currentSlide,
+      nextSlide,
+      prevSlide,
+      getSlideCount,
+      goToSlide,
+      paginationEnabled,
+      navEnabled,
+    };
+  },
+};
+</script>
+
   
-      onMounted(() => {
-        getSlideCount.value = document.querySelectorAll(".slide").length;
-      });
   
-      return {
-        currentSlide,
-        nextSlide,
-        prevSlide,
-        getSlideCount,
-        goToSlide,
-        pagintationEnabled,
-        navEnabled,
-      };
-    },
-}
- 
-  </script>
   
   <style lang="scss">
   .navigate {
