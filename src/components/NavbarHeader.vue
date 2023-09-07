@@ -33,7 +33,9 @@
     <nav>
       <div class="navbar">
         <div class="logo">
-          <img src="@/assets/logo-star.png" alt="Logo" class="logo-img"/>
+          <router-link to="/" class="logo-link">
+           <img src="@/assets/logo-star.png" alt="Logo" class="logo-img"/>
+          </router-link>
         </div>
 
         <ul class="nav-links">
