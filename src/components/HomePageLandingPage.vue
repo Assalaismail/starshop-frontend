@@ -1,7 +1,7 @@
 <template>
   <div>
-    <!-- <carousel-slide></carousel-slide> -->
     <img-carousel-img></img-carousel-img>
+    <cat-egories></cat-egories>
   </div>
 
 
@@ -56,15 +56,13 @@
 
 <script>
 import "@fortawesome/fontawesome-free/css/all.css";
-// import CarouselSlide from './CarouselSlide.vue';
-// import video1 from "../assets/video1.mp4"
-
-import ImgCarouselImg from '../components/ImgCarouselImg.vue'
+import ImgCarouselImg from '../components/ImgCarouselImg.vue';
+import CatEgories from '../components/CatEgories.vue';
 
 export default {
   components: {
-    // CarouselSlide,
     ImgCarouselImg,
+    CatEgories,
   },
 
   methods: {
@@ -99,9 +97,6 @@ export default {
   opacity: 1;
 }
 
-
-
-
 .home-button {
             color: white;
             padding: 10px 20px;
@@ -114,7 +109,7 @@ export default {
             border-radius: 50px;
             width: 200px;
             height: 50px;
-            background-color: #e1b01f;
+            background-color: #87588f;
             margin-top: 200px;
             font-weight: 600;
         }
@@ -126,7 +121,7 @@ export default {
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, #6e6434);
+            background: linear-gradient(90deg, transparent, #e0a9d0);
             transform: translateX(-100%);
             animation: none;
             transition: transform 0.3s; /* transition effect for a smoother appearance */
