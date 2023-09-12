@@ -31,13 +31,12 @@
   </nav>
 
   <nav class="mobile-nav" v-if="isMobileView">
-
     <div class="logo-menu">
       <div class="logo">
         <router-link to="/" class="logo-link">
           <img src="@/assets/logo-star.png" alt="Logo" class="logo-img" />
         </router-link>
-      </div>
+    </div>
       
       <div class="cart-wish">
         <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
@@ -48,15 +47,61 @@
       <i class="fa-solid fa-bars"></i>
     </div>
     </div>
-    <ul class="nav-links mobile-menu" v-show="showMobileMenu">
-      <li class="has-submenu" v-for="category in categories" :key="category.id">
-        <router-link :to="`/${category.slug}`" class="a">
-          {{ category.name }}
-        </router-link>
-      </li>
-    </ul>
-  </nav>
 
+
+    
+
+  <ul class="nav-links mobile-menu" :class="{ 'mobile-menu-show': showMobileMenu }">
+
+    <div class="title-x">
+      <p class="menu-title">Menu</p>
+
+      <div class="close-icon" @click="toggleMobileMenu" v-show="showMobileMenu">
+         <i class="fas fa-times"></i>
+      </div>
+
+    </div>
+
+    <div class="has-submenu-mobile">
+          <li class="has-submenu" v-for="category in categories" :key="category.id">
+          <div class="r-i">
+             <router-link :to="`/${category.slug}`" class="a">
+                {{ category.name }} 
+             </router-link>
+
+             <i class="fa-solid fa-chevron-down"></i>
+          </div>
+           </li>
+     </div>
+
+     <div>
+      <p class="account">
+        Account
+      </p>
+      <div class="two-buttons">
+        <router-link to="/login" class="btn-log">LOGIN</router-link>
+        <router-link to="/register" class="btn-reg">REGISTER</router-link>
+      </div>
+     </div>
+
+     <div>
+      <p class="account">
+        Navigate our stores
+      </p>
+      <div class="countries">
+        <p>Lebanon</p>
+        <img src="">
+      </div>
+
+      <div>
+        <p>You are currently shopping in Lebanon, <br> and your order will be billed in USD.</p>
+      </div>
+     </div>
+
+  </ul>
+
+  </nav>
+<!-- ------------------------------------------------------------------------------------------------------- -->
   <nav class="desktop-nav" v-else>
     <div class="navbar">
       <div class="logo">
@@ -79,6 +124,7 @@
       </div>
     </div>
   </nav>
+<!-- --------------------------------------------------------------------------------------------- -->
 </template>
 
 <script>
@@ -106,10 +152,10 @@ export default {
   },
 
   methods: {
-    toggleMobileMenu() {
-      this.showMobileMenu = !this.showMobileMenu;
-    },
+  toggleMobileMenu() {
+    this.showMobileMenu = !this.showMobileMenu;
   },
+},
 
   computed: {
     // Detect if the viewport is in mobile size (adjust the breakpoint as needed)
@@ -176,8 +222,7 @@ export default {
     margin-top: -35px;
   }
 
-.left-section,
-.right-section {
+.left-section, .right-section {
   display: flex;
   align-items: center;
 }
@@ -229,20 +274,126 @@ export default {
   display: none;
 }
 
-.mobile-menu {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  background-color: #c3aba9;
-}
 
 .mobile-nav .burger-menu {
   cursor: pointer;
   margin-right: 10px;
 }
 
-@media all and (max-width: 768px) {
+.mobile-menu-slide {
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(-100%);
+}
 
+.mobile-menu-show {
+  transform: translateX(0);
+}
+
+.mobile-menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: -100%; /* Hide the menu off-screen initially */
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: right 0.3s ease-in-out;
+  z-index: 1000; /* Ensure the menu is above other content */
+
+}
+
+.mobile-menu-show {
+  right: 0; /* Slide the menu into view when active */
+}
+
+.title-x {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #7f9096;
+  height: 60px;
+
+}
+
+.menu-title {
+  margin: 0;
+  padding: 10px;
+  font-size: 20px;
+  color: white;
+}
+
+.close-icon {
+  cursor: pointer;
+  padding: 10px;
+  color: white;
+  font-size: 18px;
+}
+
+.has-submenu-mobile{
+  margin-top: 20px;
+}
+
+.r-i{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  text-align: start;
+  padding: 15px;
+  color: black;
+
+}
+
+.account{
+  text-align: start ;
+  padding-left: 13px;
+  font-weight: 700;
+  margin-top: 25px;
+}
+
+.two-buttons{
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.btn-log{
+  background: none;
+  padding: 10px;
+  margin-left: 20px;
+  background-color: #7f9096;
+  border: none;
+  color: white;
+  width: 200px;
+  border-radius: 3px;
+  font-size: 13px;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,.8);
+  text-decoration: none;
+}
+
+.btn-reg{
+  background: none;
+  padding: 10px;
+  margin-right: 20px;
+  background-color: white;
+  border: none;
+  color: black;
+  width: 200px;
+  border-radius: 3px;
+  font-size: 13px;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,.8);
+  text-decoration: none;
+}
+
+.countries{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 15px;
+}
+
+@media all and (max-width: 768px) {
   .navbartop{
     display: none;
   }
@@ -255,7 +406,6 @@ export default {
   .logo-menu{
     display: flex;
     flex-direction: row;
-    /* gap: 8rem; */
   }
   .nav-links{
    padding: 0px;

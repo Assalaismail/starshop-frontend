@@ -74,7 +74,6 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-
   .card-container {
   display: flex;
   flex-direction: row;

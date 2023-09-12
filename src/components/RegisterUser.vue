@@ -165,7 +165,6 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 12px;
-
 }
 
 .acc{
@@ -187,7 +186,6 @@
 .btn-register{
   display: flex;
   flex-direction: row;
-  /* justify-content: end; */
   margin-top: 20px;
   gap: 4.8rem;
 }
@@ -203,6 +201,33 @@
 
 .button-register:hover {
   background-color: #ccc;
+}
+
+
+@media screen and (max-width: 768px) {
+  .btn-register{
+  gap: 2.5rem;
+  margin-bottom: 40px;
+}
+
+.button-register {
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+}
+
+@media screen and (max-width: 360px) {
+  .btn-register{
+  gap: 0.5rem;
+  margin-bottom: 40px;
+}
+
+.button-register {
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
 }
   </style>
   

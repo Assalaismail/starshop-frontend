@@ -194,5 +194,41 @@
 .button-login:hover {
   background-color: #ccc;
 }
+
+@media screen and (max-width: 768px) {
+  .btn-login{
+  gap: 0.5rem;
+
+}
+
+.button-login{
+  justify-content: end;
+}
+}
+
+@media screen and (max-width: 360px) {
+.btn-login{
+  gap: 0rem;
+}
+
+.button-login {
+  /* padding: 10px 20px; */
+  font-size: 14px;
+  margin-left: 15px;
+  padding: 5px 10px;
+}
+
+@media screen and (max-width: 375px) {
+
+  .btn-login{
+  gap: 0rem;
+}
+
+
+}
+
+
+}
+
   </style>
   
