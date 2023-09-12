@@ -72,4 +72,25 @@ export default {
   font-weight: 600;
   color: black;
 }
+
+@media screen and (max-width: 768px) {
+
+  .card-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 35px;
+  padding-left: 0;
+  padding-right: 0;
+}
+  .card img {
+  object-fit: cover;
+  width: 150px;
+  height: 150px;
+  border-radius: 18px ;
+}
+
+}
 </style>

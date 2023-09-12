@@ -96,9 +96,16 @@
   } */
 
   .img-carousel {
-        width: 100%;
-        height: 90vh;
-        object-fit: cover;
+   width: 100%;
+   height: 90vh;
+   object-fit: cover;
+  }
+
+@media all and (max-width: 768px) {
+  .img-carousel {
+   height: 40vh;
+ }
+
       }
   </style>
   

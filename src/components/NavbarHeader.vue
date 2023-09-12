@@ -1,5 +1,5 @@
 <template>
-   <nav>
+  <nav>
     <div class="navbartop">
       <div class="left-section">
         <ul class="nav-links-left">
@@ -21,36 +21,62 @@
         <ul class="nav-links-right">
           <li>
             <router-link to="/login">
-          <i class="fas fa-sign-in-alt"></i>
-          Login
-        </router-link>
+              <i class="fas fa-sign-in-alt"></i>
+              Login
+            </router-link>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-    <nav>
-      <div class="navbar">
-        <div class="logo">
-          <router-link to="/" class="logo-link">
-           <img src="@/assets/logo-star.png" alt="Logo" class="logo-img"/>
-          </router-link>
-        </div>
+  <nav class="mobile-nav" v-if="isMobileView">
 
-        <ul class="nav-links">
+    <div class="logo-menu">
+      <div class="logo">
+        <router-link to="/" class="logo-link">
+          <img src="@/assets/logo-star.png" alt="Logo" class="logo-img" />
+        </router-link>
+      </div>
+      
+      <div class="cart-wish">
+        <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+        <li class="wishlist-icon"><a href="/wishlist"><i class="fas fa-heart"></i></a></li>
+      </div>
+
+    <div class="burger-menu" @click="toggleMobileMenu">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+    </div>
+    <ul class="nav-links mobile-menu" v-show="showMobileMenu">
       <li class="has-submenu" v-for="category in categories" :key="category.id">
         <router-link :to="`/${category.slug}`" class="a">
           {{ category.name }}
         </router-link>
       </li>
     </ul>
+  </nav>
 
-    <div class="cart-wish">
-      <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-      <li class="wishlist-icon"><a href="/wishlist"><i class="fas fa-heart"></i></a></li>
-    </div>
+  <nav class="desktop-nav" v-else>
+    <div class="navbar">
+      <div class="logo">
+        <router-link to="/" class="logo-link">
+          <img src="@/assets/logo-star.png" alt="Logo" class="logo-img" />
+        </router-link>
+      </div>
 
+      <ul class="nav-links">
+        <li class="has-submenu" v-for="category in categories" :key="category.id">
+          <router-link :to="`/${category.slug}`" class="a">
+            {{ category.name }}
+          </router-link>
+        </li>
+      </ul>
+
+      <div class="cart-wish">
+        <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+        <li class="wishlist-icon"><a href="/wishlist"><i class="fas fa-heart"></i></a></li>
+      </div>
     </div>
   </nav>
 </template>
@@ -63,6 +89,7 @@ export default {
   data() {
     return {
       categories: [],
+      showMobileMenu: false,
     };
   },
   
@@ -70,16 +97,27 @@ export default {
     axios
       .get("http://127.0.0.1:8000/api/category")
       .then((response) => {
-        console.log("API Response:", response.data); // Log the entire API response data
-        this.categories = response.data.data; // Extract the "data" array from the response
+        console.log("API Response:", response.data);
+        this.categories = response.data.data;
       })
       .catch((error) => {
         console.error("Error fetching data from API:", error);
       });
   },
-}
 
+  methods: {
+    toggleMobileMenu() {
+      this.showMobileMenu = !this.showMobileMenu;
+    },
+  },
 
+  computed: {
+    // Detect if the viewport is in mobile size (adjust the breakpoint as needed)
+    isMobileView() {
+      return window.innerWidth <= 768;
+    },
+  },
+};
 </script>
   
   <style scoped>
@@ -173,7 +211,6 @@ export default {
 
 .wishlist-icon .fas {
   color: black;
-  
 }
 .cart-icon .fas{
   color: black;
@@ -185,8 +222,73 @@ export default {
 }
 .cart-wish li{
   list-style: none;
-  
 }
+
+/* Mobile menu styles */
+.mobile-nav {
+  display: none;
+}
+
+.mobile-menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  background-color: #c3aba9;
+}
+
+.mobile-nav .burger-menu {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+@media all and (max-width: 768px) {
+
+  .navbartop{
+    display: none;
+  }
+  .desktop-nav {
+    display: none;
+  }
+  .mobile-nav {
+    display: block;
+  }
+  .logo-menu{
+    display: flex;
+    flex-direction: row;
+    /* gap: 8rem; */
+  }
+  .nav-links{
+   padding: 0px;
+   margin-top: 0;
+   margin-bottom: 0;
+  }
+  .burger-menu{
+    margin-top: 30px;
+    align-items: center;
+    font-size: 18px;
+    margin-left: 30px;
+  }
+  .cart-icon{
+  margin-left: 50px;
+}
+  .wishlist-icon {
+  margin-left: 30px;
+}
+
+  .cart-wish{
+  margin-top: 30px;
+}
+
+.nav-links .a {
+    text-decoration: none;
+    padding-left: 0px;
+    font-weight: 500;
+    color: #737373;
+    align-items: end;
+  }
+
+}
+
 
 
 

@@ -48,6 +48,7 @@
           </ul>
         </section>
       </main>
+
       <p class="copyright">
         Copyright © 2023 All rights reserved
       </p>
@@ -88,9 +89,7 @@
     gap: 7rem;
     height: 30dvh;
     position: relative;
-    display: flex;
     justify-content: center;
-
   }
   
   .footer-main section {
@@ -190,60 +189,22 @@
     font-weight: 600;
   }
   
-  @media all and (max-width: 476px) {
-    .footer-main {
-      flex-direction: column;
-    }
-  
-    .footer-main section {
-      text-align: center;
-    }
-    footer {
-      height: auto;
-      padding: 7vh;
-    }
-  
-    .icons-wrapper {
-      justify-content: center;
-    }
-    .footer-main h1 {
-      font-size: clamp(0.75rem, -1.0833rem + 9.1667vw, 1.4375rem);
-      color: #737373;
-    }
-  
-    .footer-main section {
-      grid-template-rows: 40px auto;
-    }
-  
-    .footer-main section ul {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .footer-main section ul li {
-      font-size: clamp(0.5625rem, -0.7708rem + 6.6667vw, 1.0625rem);
-    }
-  
-    footer {
-      display: flex;
-    }
-    .copyright {
-      position: absolute;
-      bottom: 1%;
-      color: rgb(136, 136, 136);
-      font-size: x-small;
-      text-align: center;
-      padding: 5%;
-    }
+  @media all and (max-width: 768px) {
 
-    ul li {
-        list-style: none;
-      }
-    
-      .footer-main a {
-        text-decoration: none;
-      }
+    .footer-main {
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
   }
+
+  .icons-wrapper {
+    gap: 28px;
+  }
+  }
+
   
   </style>
   

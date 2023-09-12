@@ -4,7 +4,6 @@
     <cat-egories></cat-egories>
   </div>
 
-
   <div>
     <div class="video-container">
       <!-- Video 1 -->
@@ -26,8 +25,13 @@
   </div>
 
   <div>
+    <cat-egories-two></cat-egories-two>
+  </div>
+
+  <div>
     <button class="home-button">SHOP ALL</button>
   </div>
+
   <div class="last-section">
     <div class="r">
       <i class="fa-solid fa-truck" ></i>
@@ -58,11 +62,13 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import ImgCarouselImg from '../components/ImgCarouselImg.vue';
 import CatEgories from '../components/CatEgories.vue';
+import CatEgoriesTwo from "./CatEgoriesTwo.vue";
 
 export default {
   components: {
     ImgCarouselImg,
     CatEgories,
+    CatEgoriesTwo,
   },
 
   methods: {
@@ -110,7 +116,7 @@ export default {
             width: 200px;
             height: 50px;
             background-color: #87588f;
-            margin-top: 200px;
+            margin-top: 50px;
             font-weight: 600;
         }
 
@@ -140,7 +146,7 @@ export default {
             }
         }
 
-.last-section{
+.last-section {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -148,16 +154,46 @@ export default {
   margin-top: 60px;
 }
 
-.r i{
+.r i {
   font-size: 23px;
 }
-.first-p{
+
+.first-p {
   font-size: 16px;
   font-weight: 700;
   color: #787d83;
 }
 
-.second-p{
+.second-p {
   font-size: 12px;
+}
+
+@media screen and (max-width: 768px) {
+.last-section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+}
+
+.r {
+  width: 150px;
+  height: 150px;
+  padding-right: 17px;
+  padding-left: 20px;
+}
+
+.first-p {
+  font-size: 14px;
+  font-weight: 600;
+  color: #787d83;
+}
+
+.video-wrapper {
+  position: relative;
+  margin: 0.7rem;
+}
+
 }
 </style>
