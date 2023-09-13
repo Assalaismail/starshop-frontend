@@ -35,6 +35,7 @@ import LoginUser from './components/LoginUser.vue';
 import RegisterUser from './components/RegisterUser.vue';
 import ContactUs from './components/ContactUs.vue'
 import WishlistProduct from './components/WishlistProduct.vue'
+import ProductsSubCategories from './components/ProductsSubCategories.vue'
 
 const routes = [
   {
@@ -47,6 +48,7 @@ const routes = [
       { path: 'contact', component: ContactUs },
       { path: 'wishlist', component: WishlistProduct },
       { path: '/category/:categoryName', component: HomePageLandingPage },
+      { path: '/product-categories', component: ProductsSubCategories },
     ],
   },
 ];

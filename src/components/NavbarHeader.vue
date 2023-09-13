@@ -506,7 +506,7 @@ export default {
   .cart-wish{
   margin-top: 30px;
   }
-
+  
   .nav-links .a {
     text-decoration: none;
     padding-left: 0px;
