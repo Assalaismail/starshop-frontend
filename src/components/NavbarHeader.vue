@@ -36,20 +36,19 @@
         <router-link to="/" class="logo-link">
           <img src="@/assets/logo-star.png" alt="Logo" class="logo-img" />
         </router-link>
-    </div>
+      </div>
       
       <div class="cart-wish">
         <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
         <li class="wishlist-icon"><a href="/wishlist"><i class="fas fa-heart"></i></a></li>
       </div>
 
-    <div class="burger-menu" @click="toggleMobileMenu">
-      <i class="fa-solid fa-bars"></i>
-    </div>
+      <div class="burger-menu" @click="toggleMobileMenu">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+
     </div>
 
-
-    
 
   <ul class="nav-links mobile-menu" :class="{ 'mobile-menu-show': showMobileMenu }">
 
@@ -65,14 +64,15 @@
     <div class="has-submenu-mobile">
           <li class="has-submenu" v-for="category in categories" :key="category.id">
           <div class="r-i">
-             <router-link :to="`/${category.slug}`" class="a">
+             <a :to="`/${category.slug}`" class="a" @click="fetchSubcategories(category.name)">
                 {{ category.name }} 
-             </router-link>
+             </a>
 
              <i class="fa-solid fa-chevron-down"></i>
           </div>
-           </li>
-     </div>
+           </li>  
+    </div>
+
 
      <div>
       <p class="account">
@@ -90,7 +90,7 @@
       </p>
       <div class="countries">
         <p>Lebanon</p>
-        <img src="">
+        <img src="../assets/lb-svg.png" class="lb-flag">
       </div>
 
       <div>
@@ -102,7 +102,7 @@
 
   </nav>
 <!-- ------------------------------------------------------------------------------------------------------- -->
-  <nav class="desktop-nav" v-else>
+<nav class="desktop-nav" v-else>
     <div class="navbar">
       <div class="logo">
         <router-link to="/" class="logo-link">
@@ -110,19 +110,35 @@
         </router-link>
       </div>
 
+      
       <ul class="nav-links">
         <li class="has-submenu" v-for="category in categories" :key="category.id">
-          <router-link :to="`/${category.slug}`" class="a">
-            {{ category.name }}
-          </router-link>
+          <a @click="fetchSubcategories(category.name)" class="a">
+              {{ category.name }}
+          </a>
         </li>
       </ul>
+
+  <!-- Display subcategories as a card -->
+  <div class="subcategories-card" v-if="subcategories.length > 0">
+      <div class="card">
+        <ul>
+          <li v-for="subcategory in subcategories" :key="subcategory.id">
+            {{ subcategory.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+
 
       <div class="cart-wish">
         <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
         <li class="wishlist-icon"><a href="/wishlist"><i class="fas fa-heart"></i></a></li>
+</div>
+
       </div>
-    </div>
   </nav>
 <!-- --------------------------------------------------------------------------------------------- -->
 </template>
@@ -135,6 +151,7 @@ export default {
   data() {
     return {
       categories: [],
+      subcategories: [],
       showMobileMenu: false,
     };
   },
@@ -155,6 +172,21 @@ export default {
   toggleMobileMenu() {
     this.showMobileMenu = !this.showMobileMenu;
   },
+
+
+  
+
+  fetchSubcategories(categoryName) {
+      axios
+        .get(`http://127.0.0.1:8000/api/subcategoryname/${categoryName}`)
+        .then((response) => {
+          console.log("Subcategories:", response.data);
+          this.subcategories = response.data.data;
+        })
+        .catch((error) => {
+          console.error("Error fetching subcategories from API:", error);
+        });
+    },
 },
 
   computed: {
@@ -173,6 +205,7 @@ export default {
     justify-content: center;
     align-items: center;
     margin-top: 0px;
+    cursor: pointer;
   }
   
   .logo-img{
@@ -214,13 +247,13 @@ export default {
   list-style: none;
 }
 
-  .navbartop {
+.navbartop {
     color: grey;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: -35px;
-  }
+}
 
 .left-section, .right-section {
   display: flex;
@@ -390,7 +423,52 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 15px;
+  padding-left: 25px;
+  
+}
+
+.lb-flag{
+  width:20px;
+  height: 20px;
+  margin-right: 25px;
+}
+
+.fixed-navbar {
+  position: fixed;
+  /* top: 0;
+  left: 0;
+  right: 0; */
+  z-index: 1000;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px;
+}
+
+  /* Style for the subcategories card */
+  .subcategories-card {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Adjust as needed */
+}
+
+.card {
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.card li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333; /* Adjust text color as needed */
 }
 
 @media all and (max-width: 768px) {
@@ -420,16 +498,16 @@ export default {
   }
   .cart-icon{
   margin-left: 50px;
-}
+  }
   .wishlist-icon {
   margin-left: 30px;
-}
+  }
 
   .cart-wish{
   margin-top: 30px;
-}
+  }
 
-.nav-links .a {
+  .nav-links .a {
     text-decoration: none;
     padding-left: 0px;
     font-weight: 500;
@@ -438,9 +516,5 @@ export default {
   }
 
 }
-
-
-
-
-  </style>
+</style>
   
