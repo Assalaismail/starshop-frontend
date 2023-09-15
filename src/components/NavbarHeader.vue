@@ -62,7 +62,7 @@
     </div>
 
     <div class="has-submenu-mobile">
-          <li class="has-submenu" v-for="category in categories" :key="category.id">
+        <li class="has-submenu" v-for="category in categories" :key="category.id">
           <div class="r-i">
              <a :to="`/${category.slug}`" class="a" @click="fetchSubcategories(category.name)">
                 {{ category.name }} 
@@ -70,7 +70,7 @@
 
              <i class="fa-solid fa-chevron-down"></i>
           </div>
-           </li>  
+        </li>  
     </div>
 
 
@@ -104,6 +104,7 @@
 <!-- ------------------------------------------------------------------------------------------------------- -->
 <nav class="desktop-nav" v-else>
     <div class="navbar">
+
       <div class="logo">
         <router-link to="/" class="logo-link">
           <img src="@/assets/logo-star.png" alt="Logo" class="logo-img" />
@@ -119,28 +120,25 @@
         </li>
       </ul>
 
-  <!-- Display subcategories as a card -->
-  <div class="subcategories-card" v-if="subcategories.length > 0">
-      <div class="card">
-        <ul>
-          <li v-for="subcategory in subcategories" :key="subcategory.id">
-            {{ subcategory.name }}
-          </li>
-        </ul>
-      </div>
-    </div>
-
-
-
-
       <div class="cart-wish">
         <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
         <li class="wishlist-icon"><a href="/wishlist"><i class="fas fa-heart"></i></a></li>
-</div>
-
       </div>
+
+    </div>
   </nav>
-<!-- --------------------------------------------------------------------------------------------- -->
+
+  <!-- Display subcategories as a card -->
+    <div class="subcategories-card" v-if="subcategories.length > 0">
+      <div class="card">
+        <ul class="card-ul">
+          <a v-for="subcategory in subcategories" :key="subcategory.id" class="card-li">
+            {{ subcategory.name }}
+          </a>
+        </ul>
+      </div>
+    </div>
+<!------------------------------------------------------------------------------------------------->
 </template>
 
 <script>
@@ -172,9 +170,6 @@ export default {
   toggleMobileMenu() {
     this.showMobileMenu = !this.showMobileMenu;
   },
-
-
-  
 
   fetchSubcategories(categoryName) {
       axios
@@ -307,7 +302,6 @@ export default {
   display: none;
 }
 
-
 .mobile-nav .burger-menu {
   cursor: pointer;
   margin-right: 10px;
@@ -334,7 +328,6 @@ export default {
   background-color: white;
   transition: right 0.3s ease-in-out;
   z-index: 1000; /* Ensure the menu is above other content */
-
 }
 
 .mobile-menu-show {
@@ -347,7 +340,6 @@ export default {
   align-items: center;
   background-color: #7f9096;
   height: 60px;
-
 }
 
 .menu-title {
@@ -377,7 +369,6 @@ export default {
   color: black;
 
 }
-
 .account{
   text-align: start ;
   padding-left: 13px;
@@ -424,7 +415,6 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding-left: 25px;
-  
 }
 
 .lb-flag{
@@ -433,43 +423,37 @@ export default {
   margin-right: 25px;
 }
 
-.fixed-navbar {
-  position: fixed;
-  /* top: 0;
-  left: 0;
-  right: 0; */
-  z-index: 1000;
-  color: black;
+/* Center the subcategories using Flexbox */
+.subcategories-card {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 0px;
-}
-
-  /* Style for the subcategories card */
-  .subcategories-card {
-  display: flex;
-  justify-content: center;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  flex-wrap: wrap; /* Allow subcategories to wrap onto multiple rows */
   margin-top: 20px; /* Adjust as needed */
 }
 
 .card {
-  background-color: #ffffff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 10px;
   border-radius: 5px;
-  padding: 20px;
+  position: absolute;
 }
 
-.card ul {
+.card-ul {
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.card li {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #333; /* Adjust text color as needed */
+.card-li {
+  margin: 5px; /* Adjust spacing between subcategories */
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
+
 
 @media all and (max-width: 768px) {
   .navbartop{
