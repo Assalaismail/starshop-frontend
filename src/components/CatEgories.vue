@@ -1,8 +1,8 @@
 <template>
       <div class="card-container">
         <div  v-for="(subcategory) in subcategories" :key="subcategory.id">
-          <div class="card">
-            <img :src="subcategory.image" class="card-img-top" alt="Category Image">
+          <div class="card" @click="navigateToSubcategory(subcategory.name)">
+            <img :src="subcategory.image" class="card-img-top" alt="Category Image" >
             <div class="card-body">
               <p class="card-title">{{ subcategory.name }}</p>
             </div>
@@ -21,6 +21,13 @@ export default {
       subcategories: [],
     };
   },
+
+  methods: {
+    navigateToSubcategory(subcategoryName) {
+      this.$router.push({ name: 'subcategory', params: { subcategoryName } });
+    },
+  },
+
   
   mounted() {
     axios
@@ -63,6 +70,7 @@ export default {
   width: 350px;
   height: 350px;
   border-radius: 20px ;
+  cursor: pointer;
 }
 
 .card-title {

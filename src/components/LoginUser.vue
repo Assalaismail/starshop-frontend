@@ -24,7 +24,7 @@
     placeholder="Please enter your password" 
     v-model="password"
   />
-  <a href="#" class="forgot-pass">Forgot Password?</a>
+  <a href="/password-reset" class="forgot-pass">Forgot Password?</a>
 </div>
 
 

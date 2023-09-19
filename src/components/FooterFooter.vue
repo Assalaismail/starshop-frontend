@@ -50,7 +50,7 @@
       </main>
 
       <p class="copyright">
-        Copyright © 2023 All rights reserved
+        Copyright © 2023 All rights reserved | Assala Ismail
       </p>
 
   </template>

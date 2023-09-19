@@ -36,6 +36,7 @@ import RegisterUser from './components/RegisterUser.vue';
 import ContactUs from './components/ContactUs.vue'
 import WishlistProduct from './components/WishlistProduct.vue'
 import ProductsSubCategories from './components/ProductsSubCategories.vue'
+import PasswordReset from './components/PasswordReset.vue'
 
 const routes = [
   {
@@ -48,7 +49,10 @@ const routes = [
       { path: 'contact', component: ContactUs },
       { path: 'wishlist', component: WishlistProduct },
       { path: '/category/:categoryName', component: HomePageLandingPage },
-      { path: '/product-categories', component: ProductsSubCategories },
+
+      { path: '/product-categories/:subcategoryName',  name: 'subcategory', component: ProductsSubCategories,  props: true,},
+
+      { path: '/password-reset', component: PasswordReset },
     ],
   },
 ];

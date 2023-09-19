@@ -58,29 +58,26 @@
       <div class="close-icon" @click="toggleMobileMenu" v-show="showMobileMenu">
          <i class="fas fa-times"></i>
       </div>
-
     </div>
 
     <div class="has-submenu-mobile">
         <li class="has-submenu" v-for="category in categories" :key="category.id">
           <div class="r-i">
-             <a :to="`/${category.slug}`" class="a" @click="fetchSubcategories(category.name)">
+             <a :to="`/${category.slug}`" class="a">
                 {{ category.name }} 
              </a>
-
              <i class="fa-solid fa-chevron-down"></i>
           </div>
         </li>  
     </div>
-
 
      <div>
       <p class="account">
         Account
       </p>
       <div class="two-buttons">
-        <router-link to="/login" class="btn-log">LOGIN</router-link>
-        <router-link to="/register" class="btn-reg">REGISTER</router-link>
+        <router-link to="/login" class="btn-log" @click="toggleMobileMenu" v-show="showMobileMenu">LOGIN</router-link>
+        <router-link to="/register" class="btn-reg" @click="toggleMobileMenu" v-show="showMobileMenu">REGISTER</router-link>
       </div>
      </div>
 
@@ -101,6 +98,8 @@
   </ul>
 
   </nav>
+
+  
 <!-- ------------------------------------------------------------------------------------------------------- -->
 <nav class="desktop-nav" v-else>
     <div class="navbar">
@@ -126,7 +125,7 @@
       </div>
 
     </div>
-  </nav>
+</nav>
 
   <!-- Display subcategories as a card -->
     <div class="subcategories-card" v-if="subcategories.length > 0">

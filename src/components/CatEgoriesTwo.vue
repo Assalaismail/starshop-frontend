@@ -90,6 +90,7 @@ object-fit: cover;
 width: 150px;
 height: 150px;
 border-radius: 18px ;
+cursor: pointer;
 }
 
 }
