@@ -46,7 +46,6 @@
       <div class="burger-menu" @click="toggleMobileMenu">
         <i class="fa-solid fa-bars"></i>
       </div>
-
     </div>
 
 
