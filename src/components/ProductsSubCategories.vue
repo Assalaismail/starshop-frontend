@@ -14,7 +14,7 @@
   <filter-page :show-filter-page="showFilterMenu" @apply-filters="applyFilters"></filter-page>
 
     <div class="product-container">
-      <div v-for="(product) in products" :key="product.id" class="product-card">
+      <div v-for="(product) in filteredProducts" :key="product.id" class="product-card">
         <!-- Decode the JSON string to get an array of image URLs -->
         <img :src="JSON.parse(product.images)[0]" alt="Product Image" class="product-image">
         <p class="product-name">{{ product.name }}</p>
@@ -39,9 +39,11 @@ export default {
       showFilterMenu: false,
 
       // Add data properties for selected filters here
-      selectedPriceFilter: '',
+      selectedPriceFilter: { min: 0, max: 150 }, // Initialize with default values
       selectedColorFilter: '',
 
+      // Add a property for the filtered products
+      filteredProducts: [],
     };
   },
   created() {
@@ -49,40 +51,57 @@ export default {
     this.fetchProducts(this.subcategoryName);
   },
   methods: {
-
     toggleFilterMenu() {
-    this.showFilterMenu = !this.showFilterMenu;
-  },
-
-  fetchProducts(subcategoryName) {
-  axios
-    .get(`http://127.0.0.1:8000/api/productsname/${subcategoryName}`, {
-      params: {
-        price: this.selectedPriceFilter,
-        color: this.selectedColorFilter,
-      },
-    })
-    .then((response) => {
-      console.log("API Response:", response.data);
-      this.products = response.data.data;
-    })
-    .catch((error) => {
-      console.error("Error fetching data from API:", error);
-    });
-},
-
-
-     // Add a method to handle filter application
-     applyFilters(filters) {
-      this.selectedPriceFilter = filters.price;
-      this.selectedColorFilter = filters.color;
-      this.fetchProducts(this.subcategoryName);
-      this.showFilterMenu = false; // Close the filter page
+      this.showFilterMenu = !this.showFilterMenu;
     },
 
+    fetchProducts(subcategoryName) {
+      axios
+        .get(`http://127.0.0.1:8000/api/productsname/${subcategoryName}`, {
+          params: {
+            price_min: this.selectedPriceFilter.min,
+            price_max: this.selectedPriceFilter.max,
+            color: this.selectedColorFilter,
+          },
+        })
+        .then((response) => {
+          console.log("API Response:", response.data);
+          this.products = response.data.data;
+          // Initially, set the filteredProducts to be the same as products
+          this.filteredProducts = this.products;
+        })
+        .catch((error) => {
+          console.error("Error fetching data from API:", error);
+        });
+    },
+
+    // Add a method to handle filter application
+    applyFilters(filters) {
+      this.selectedPriceFilter = filters.price;
+      this.selectedColorFilter = filters.color;
+
+      // Apply filters to update the filteredProducts array
+      this.filteredProducts = this.products.filter((product) => {
+        const price = product.price;
+
+        // Check if the product matches the selected price range
+        const priceInRange =
+          price >= this.selectedPriceFilter.min && price <= this.selectedPriceFilter.max;
+
+        // Check if the product matches the selected color filter
+        const colorMatches =
+          !this.selectedColorFilter || product.color === this.selectedColorFilter;
+
+        return priceInRange && colorMatches;
+      });
+
+      this.showFilterMenu = false; // Close the filter page
+    },
   },
 };
 </script>
+
+
 
 <style scoped>
 .img-background-products {
@@ -145,7 +164,7 @@ color: white;
   padding: 10px;
   text-align: center;
   background-color: #fff;
-  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px 1px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -165,7 +184,7 @@ color: white;
 }
 
 .product-image:hover{
-    opacity: 0.6;
+    /* opacity: 0.6; */
 }
 
 .product-name {

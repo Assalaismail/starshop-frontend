@@ -1,7 +1,7 @@
 <template>
     <div class="card-container">
       <div  v-for="(subcategory) in subcategories" :key="subcategory.id">
-        <div class="card">
+        <div class="card" @click="navigateToSubcategory(subcategory.name)">
           <img :src="subcategory.image" class="card-img-top" alt="Category Image">
           <div class="card-body">
             <p class="card-title">{{ subcategory.name }}</p>
@@ -21,6 +21,12 @@ data() {
     subcategories: [],
   };
 },
+
+methods: {
+    navigateToSubcategory(subcategoryName) {
+      this.$router.push({ name: 'subcategory', params: { subcategoryName } });
+    },
+  },
 
 mounted() {
   axios

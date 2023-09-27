@@ -14,9 +14,11 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "axios": "^1.5.0",
     "core-js": "^3.8.3",
+    "nouislider": "^15.7.1",
     "sweetalert": "^2.1.2",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4",
+    "vue-slider-component": "^3.2.24",
     "vueperslides": "^2.16.0"
   },
   "devDependencies": {

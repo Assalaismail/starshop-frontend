@@ -130,7 +130,7 @@
     <div class="subcategories-card" v-if="subcategories.length > 0">
       <div class="card">
         <ul class="card-ul">
-          <a v-for="subcategory in subcategories" :key="subcategory.id" class="card-li">
+          <a v-for="subcategory in subcategories" :key="subcategory.id" class="card-li" @click="navigateToSubcategory(subcategory.name)">
             {{ subcategory.name }}
           </a>
         </ul>
@@ -168,6 +168,10 @@ export default {
   toggleMobileMenu() {
     this.showMobileMenu = !this.showMobileMenu;
   },
+
+  navigateToSubcategory(subcategoryName) {
+      this.$router.push({ name: 'subcategory', params: { subcategoryName } });
+    },
 
   fetchSubcategories(categoryName) {
       axios
@@ -435,6 +439,7 @@ export default {
   padding: 10px;
   border-radius: 5px;
   position: absolute;
+  box-shadow: 1px 4px 8px 1px rgba(0,0,0,0.4);
 }
 
 .card-ul {
@@ -442,13 +447,13 @@ export default {
   padding: 0;
   display: flex;
   flex-wrap: wrap;
+  cursor: pointer;
 }
 
 .card-li {
   margin: 5px; /* Adjust spacing between subcategories */
   padding: 5px 10px;
   background-color: #f0f0f0;
-  border: 1px solid #ddd;
   border-radius: 5px;
 }
 

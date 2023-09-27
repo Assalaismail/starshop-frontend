@@ -13,18 +13,16 @@
         <div class="filter-options">
 
           <div class="by-price">
-    <label>BY PRICE:</label>
+            <label>BY PRICE:</label>
+          <div>
+            
+            <label for="minPrice">Minimum Price:</label>
+            <input type="range" id="minPrice" v-model.number="minPrice" @input="updateRange" />
+    
+            <label for="maxPrice">Maximum Price:</label>
+            <input type="range" id="maxPrice" v-model.number="maxPrice" @input="updateRange" />
 
-    <div class="price-range">
-      <input
-        type="range"
-        min="0"
-        max="150" 
-        step="1"
-        v-model="selectedPriceRange"
-        class="range"
-      />
-      <span>{{ selectedPriceRange }}</span>
+    <p>Selected Price Range: {{ minPrice }} - {{ maxPrice }}</p>
     </div>
 
   </div>
@@ -33,13 +31,14 @@
           <label>
             BY COLOR:
           </label>
+          
          <select v-model="selectedColorFilter" class="select-color">
           <option value="">-- Select --</option> 
           <option v-for="color in colors" :key="color.id" :value="color.title">
             {{ color.title }}
           </option>
-
          </select>
+
         </div>
 
         <div class="by-size">
@@ -54,7 +53,7 @@
          </select>
         </div>
 
-        <div >
+        <div>
           <button @click="applyFilters" class="btn-apply-filter">Apply Filters</button>
         </div>
 
@@ -77,47 +76,76 @@
         selectedPriceFilter: '',
         selectedColorFilter: '',
         selectedSizeFilter: '',
+
         colors: [],
         sizes: [],
 
-
-        selectedPriceRange: 0,
+        minPrice: 0,
+        maxPrice: 150,
       };
     },
   
     mounted() {
-      // Use Promise.all to fetch data from both API endpoints concurrently
-      Promise.all([
-        axios.get("http://127.0.0.1:8000/api/attribute/1"),
-        axios.get("http://127.0.0.1:8000/api/attribute/2"),
-      ])
-        .then(([colorResponse, sizeResponse]) => {
-          console.log("API Response - Colors:", colorResponse.data);
-          console.log("API Response - Sizes:", sizeResponse.data);
-          this.colors = colorResponse.data.data;
-          this.sizes = sizeResponse.data.data;
-        })
-        .catch((error) => {
-          console.error("Error fetching data from API:", error);
-        });
+    // Use Promise.all to fetch data from both API endpoints concurrently
+    Promise.all([
+      axios.get("http://127.0.0.1:8000/api/attribute/1"),
+      axios.get("http://127.0.0.1:8000/api/attribute/2"),
+    ])
+      .then(([colorResponse, sizeResponse]) => {
+        console.log("API Response - Colors:", colorResponse.data);
+        console.log("API Response - Sizes:", sizeResponse.data);
+        this.colors = colorResponse.data.data;
+        this.sizes = sizeResponse.data.data;
+      })
+      .catch((error) => {
+        console.error("Error fetching data from API:", error);
+      });
+  },
+  methods: {
+    updateRange() {
+      // Ensure minPrice and maxPrice are numbers
+      const min = Number(this.minPrice);
+      const max = Number(this.maxPrice);
+
+      // Perform any necessary validation
+      if (isNaN(min) || isNaN(max) || min < 0 || max < 0 || min > max) {
+        // Handle invalid range (e.g., display an error message)
+        console.error('Invalid price range');
+        // Optionally, reset the values or display an error message
+        this.minPrice = 0;
+        this.maxPrice = 150;
+      }
     },
-  
-    methods: {
-      applyFilters() {
+    applyFilters() {
+      // Ensure minPrice and maxPrice are numbers
+      const min = Number(this.minPrice);
+      const max = Number(this.maxPrice);
+
+      // Perform any necessary validation
+      if (isNaN(min) || isNaN(max) || min < 0 || max < 0 || min > max) {
+        // Handle invalid range (e.g., display an error message)
+        console.error('Invalid price range');
+        // Optionally, reset the values or display an error message
+        this.minPrice = 0;
+        this.maxPrice = 150;
+      } else {
+        console.log('assala');
         // Emit an event to inform the parent component (your original component) about the selected filters
         this.$emit('apply-filters', {
-          price: this.selectedPriceFilter,
+          price: { min, max },
           color: this.selectedColorFilter,
           size: this.selectedSizeFilter,
         });
-      },
+        console.log('assala2');
+      }
     },
-  };
-  </script>
+  },
+};
+</script>
   
   
   
-  <style scoped>
+<style scoped>
 
 
   .slide-in-enter-active, .slide-in-leave-active {
@@ -211,5 +239,5 @@ border-bottom: 1px solid #737373;
  height: 56px;
 }
   
-  </style>
+</style>
   
