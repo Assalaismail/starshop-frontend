@@ -13,21 +13,12 @@
         <input type="text" v-model="searchValue" placeholder="Search" id="search-input" @input="filterProducts" class="search"/>
         <i class="fa fa-search"></i>
       </div>
-
-      <!-- <div class="sort-by">
-          <label>SORT BY:</label>
-          <select class="sortby" v-model="sortBy" @change="sortProducts">
-            <option value="Default">Default</option>
-            <option value="min-to-max">Price: Low to High</option>
-            <option value="max-to-min">Price: High to Low</option>
-          </select>
-      </div> -->
-
     </div>
 
    
     <!-- Add the FilterPage component here -->
   <filter-page :show-filter-page="showFilterMenu" @apply-filters="applyFilters" @sort-products="sortProducts"></filter-page>
+
 
     <div class="product-container">
       <div v-for="(product) in filteredProducts" :key="product.id" class="product-card">
@@ -66,9 +57,6 @@ export default {
 
       //search
       searchValue: '',
-
-      // storeProducts: [],
-      // sortBy: 'Default',
     };
 
   },
@@ -101,17 +89,9 @@ export default {
     } else {
       // Default sorting or any other sorting logic you need
     }
-  },
 
-    // sortProducts() {
-    //   if (this.sortBy === 'min-to-max') {
-    //     this.filteredProducts.sort((a, b) => a.price - b.price);
-    //   } else if (this.sortBy === 'max-to-min') {
-    //     this.filteredProducts.sort((a, b) => b.price - a.price);
-    //   } else {
-    //     // Default sorting, no need to sort since it's already in the desired order
-    //   }
-    // },
+    this.showFilterMenu = false; // Close the filter page
+  },
   
 
     fetchProducts(subcategoryName) {
@@ -296,6 +276,14 @@ color: white;
     height: 35px;
     padding: 0px;
   }
+
+  .search {
+  width: 100px;
+}
+
+.search-icon{
+ margin-right: 10px;
+}
 
 }
 
