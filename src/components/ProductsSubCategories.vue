@@ -86,7 +86,23 @@ export default {
       this.filteredProducts.sort((a, b) => a.price - b.price);
     } else if (sortBy === 'max-to-min') {
       this.filteredProducts.sort((a, b) => b.price - a.price);
-    } else {
+    } else if (sortBy === 'a-to-z') {
+      this.filteredProducts.sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+    }else if (sortBy === 'z-to-a') {
+    this.filteredProducts.sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      if (nameA < nameB) return 1;
+      if (nameA > nameB) return -1;
+      return 0;
+    });
+    }else {
       // Default sorting or any other sorting logic you need
     }
 
@@ -166,14 +182,6 @@ export default {
     font-size: 53px; 
     font-weight: 600;
 }
-
-/* .filter-sort-buttons{
-    display: flex;
-    flex-direction: row;
-    margin-top: 30px;
-    margin-left: 30px;
-} */
-
 .filter-sort-buttons {
   display: flex;
   flex-direction: row;

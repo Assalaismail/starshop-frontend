@@ -34,6 +34,8 @@
             <option value="Default">Default</option>
             <option value="min-to-max">Price: Low to High</option>
             <option value="max-to-min">Price: High to Low</option>
+            <option value="a-to-z">Name: A to Z</option>
+            <option value="z-to-a">Name: Z to A</option>
           </select>
         </div>
 
