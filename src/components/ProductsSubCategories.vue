@@ -13,12 +13,21 @@
         <input type="text" v-model="searchValue" placeholder="Search" id="search-input" @input="filterProducts" class="search"/>
         <i class="fa fa-search"></i>
       </div>
+
+      <!-- <div class="sort-by">
+          <label>SORT BY:</label>
+          <select class="sortby" v-model="sortBy" @change="sortProducts">
+            <option value="Default">Default</option>
+            <option value="min-to-max">Price: Low to High</option>
+            <option value="max-to-min">Price: High to Low</option>
+          </select>
+      </div> -->
+
     </div>
 
    
-
     <!-- Add the FilterPage component here -->
-  <filter-page :show-filter-page="showFilterMenu" @apply-filters="applyFilters"></filter-page>
+  <filter-page :show-filter-page="showFilterMenu" @apply-filters="applyFilters" @sort-products="sortProducts"></filter-page>
 
     <div class="product-container">
       <div v-for="(product) in filteredProducts" :key="product.id" class="product-card">
@@ -49,6 +58,7 @@ export default {
 
       // Add data properties for selected filters here
       selectedPriceFilter: { min: 0, max: 150 }, // Initialize with default values
+
       selectedColorFilter: '',
 
       // Add a property for the filtered products
@@ -56,6 +66,9 @@ export default {
 
       //search
       searchValue: '',
+
+      // storeProducts: [],
+      // sortBy: 'Default',
     };
 
   },
@@ -64,6 +77,7 @@ export default {
     // Fetch data based on the subcategory name
     this.fetchProducts(this.subcategoryName);
   },
+
   methods: {
     toggleFilterMenu() {
       this.showFilterMenu = !this.showFilterMenu;
@@ -76,6 +90,29 @@ export default {
         return product.name.toLowerCase().includes(this.searchValue.toLowerCase());
       });
     },
+
+    sortProducts(sortBy) {
+    this.sortBy = sortBy;
+    // Apply sorting logic based on the selected option (this assumes you have a products array)
+    if (sortBy === 'min-to-max') {
+      this.filteredProducts.sort((a, b) => a.price - b.price);
+    } else if (sortBy === 'max-to-min') {
+      this.filteredProducts.sort((a, b) => b.price - a.price);
+    } else {
+      // Default sorting or any other sorting logic you need
+    }
+  },
+
+    // sortProducts() {
+    //   if (this.sortBy === 'min-to-max') {
+    //     this.filteredProducts.sort((a, b) => a.price - b.price);
+    //   } else if (this.sortBy === 'max-to-min') {
+    //     this.filteredProducts.sort((a, b) => b.price - a.price);
+    //   } else {
+    //     // Default sorting, no need to sort since it's already in the desired order
+    //   }
+    // },
+  
 
     fetchProducts(subcategoryName) {
       axios
@@ -119,9 +156,11 @@ export default {
       this.showFilterMenu = false; // Close the filter page
     },
 
-},
 
+
+   },
 };
+
 </script>
 
 

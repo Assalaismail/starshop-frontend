@@ -12,45 +12,49 @@
         <!-- Filter options go here -->
         <div class="filter-options">
 
-          <div class="by-price">
+         <div class="by-price">
             <label>BY PRICE:</label>
+
           <div>
-            
             <label for="minPrice">Minimum Price:</label>
             <input type="range" id="minPrice" v-model.number="minPrice" @input="updateRange" />
     
             <label for="maxPrice">Maximum Price:</label>
             <input type="range" id="maxPrice" v-model.number="maxPrice" @input="updateRange" />
 
-    <p>Selected Price Range: {{ minPrice }} - {{ maxPrice }}</p>
-    </div>
+            <p>Selected Price Range: {{ minPrice }} - {{ maxPrice }}</p>
+          </div>
 
-  </div>
+         </div>
+
+         
+         <div class="sort-by">
+          <label>SORT BY:</label>
+          <select class="sortby" v-model="sortBy" @change="sortProducts">
+            <option value="Default">Default</option>
+            <option value="min-to-max">Price: Low to High</option>
+            <option value="max-to-min">Price: High to Low</option>
+          </select>
+        </div>
 
         <div class="by-color">
-          <label>
-            BY COLOR:
-          </label>
-          
-         <select v-model="selectedColorFilter" class="select-color">
-          <option value="">-- Select --</option> 
-          <option v-for="color in colors" :key="color.id" :value="color.title">
+          <label>BY COLOR:</label>
+          <select v-model="selectedColorFilter" class="select-color">
+            <option value="">-- Select --</option> 
+            <option v-for="color in colors" :key="color.id" :value="color.title">
             {{ color.title }}
-          </option>
-         </select>
-
+            </option>
+          </select>
         </div>
 
         <div class="by-size">
-          <label>
-            BY SIZE:
-          </label>
-         <select v-model="selectedSizeFilter" class="select-size">
-          <option value="">-- Select --</option> 
-          <option v-for="size in sizes" :key="size.id" :value="size.title">
-            {{ size.abbreviation }}
-          </option>
-         </select>
+          <label>BY SIZE:</label>
+          <select v-model="selectedSizeFilter" class="select-size">
+            <option value="">-- Select --</option> 
+            <option v-for="size in sizes" :key="size.id" :value="size.title">
+              {{ size.abbreviation }}
+            </option>
+          </select>
         </div>
 
         <div>
@@ -82,6 +86,9 @@
 
         minPrice: 0,
         maxPrice: 150,
+
+        filteredProducts: [],
+        sortBy: 'Default',
       };
     },
   
@@ -102,20 +109,12 @@
       });
   },
   methods: {
-    updateRange() {
-      // Ensure minPrice and maxPrice are numbers
-      const min = Number(this.minPrice);
-      const max = Number(this.maxPrice);
 
-      // Perform any necessary validation
-      if (isNaN(min) || isNaN(max) || min < 0 || max < 0 || min > max) {
-        // Handle invalid range (e.g., display an error message)
-        console.error('Invalid price range');
-        // Optionally, reset the values or display an error message
-        this.minPrice = 0;
-        this.maxPrice = 150;
-      }
-    },
+    sortProducts() {
+    this.$emit('sort-products', this.sortBy);
+  },
+
+
     applyFilters() {
       // Ensure minPrice and maxPrice are numbers
       const min = Number(this.minPrice);
@@ -146,15 +145,12 @@
   
   
 <style scoped>
-
-
   .slide-in-enter-active, .slide-in-leave-active {
     transition: transform 0.3s;
   }
   .slide-in-enter, .slide-in-leave-to {
     transform: translateX(100%); /* Slide in from the right */
   }
-  
   .filter-page {
     position: fixed;
     top: 0;
@@ -200,7 +196,7 @@
   align-items: center;
 }
 
-.by-price , .by-color, .by-size{
+.by-price , .by-color, .by-size, .sort-by{
 display: flex;
 flex-direction: column;
 align-items: start;
@@ -230,7 +226,7 @@ border-bottom: 1px solid #737373;
   font-weight: 600;
 }
 
-.select-color, .select-size{
+.select-color , .select-size, .sortby{
   border: 1px solid #737373;
   border-radius: 5px;
   text-align: center;
