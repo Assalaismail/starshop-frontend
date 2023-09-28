@@ -8,7 +8,14 @@
 
     <div class="filter-sort-buttons">
         <button class="filter-products" @click="toggleFilterMenu" >Filter Products</button>
+
+      <div class="search-icon">
+        <input type="text" v-model="searchValue" placeholder="Search" id="search-input" @input="filterProducts" class="search"/>
+        <i class="fa fa-search"></i>
+      </div>
     </div>
+
+   
 
     <!-- Add the FilterPage component here -->
   <filter-page :show-filter-page="showFilterMenu" @apply-filters="applyFilters"></filter-page>
@@ -21,6 +28,8 @@
         <p class="product-price">${{ product.price }}</p>
       </div>
   </div>
+
+
 </template>
 
 
@@ -44,8 +53,13 @@ export default {
 
       // Add a property for the filtered products
       filteredProducts: [],
+
+      //search
+      searchValue: '',
     };
+
   },
+  
   created() {
     // Fetch data based on the subcategory name
     this.fetchProducts(this.subcategoryName);
@@ -53,6 +67,14 @@ export default {
   methods: {
     toggleFilterMenu() {
       this.showFilterMenu = !this.showFilterMenu;
+    },
+
+     // Add a method to handle input in the search bar and filter products
+     filterProducts() {
+      this.filteredProducts = this.products.filter((product) => {
+        // Filter by product name (case-insensitive)
+        return product.name.toLowerCase().includes(this.searchValue.toLowerCase());
+      });
     },
 
     fetchProducts(subcategoryName) {
@@ -94,10 +116,11 @@ export default {
 
         return priceInRange && colorMatches;
       });
-
       this.showFilterMenu = false; // Close the filter page
     },
-  },
+
+},
+
 };
 </script>
 
@@ -125,11 +148,20 @@ export default {
     font-weight: 600;
 }
 
-.filter-sort-buttons{
+/* .filter-sort-buttons{
     display: flex;
     flex-direction: row;
     margin-top: 30px;
     margin-left: 30px;
+} */
+
+.filter-sort-buttons {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  margin-left: 30px;
+  align-items: center; /* Vertically center-align the items */
+  justify-content: space-between;
 }
 
 .filter-products{
@@ -151,6 +183,23 @@ export default {
 background-color: #737373;
 color: white;
 }
+
+.search-icon{
+ margin-right: 30px;
+}
+.search {
+  border: none;
+  border-bottom: 1px solid #737373;
+  padding: 10px;
+  height: fit-content;
+  outline: none;
+  width: 200px;
+}
+
+.search:focus {
+  border-bottom: 1px solid black;
+}
+
 .product-container {
   display: flex;
   flex-direction: row;
@@ -171,20 +220,11 @@ color: white;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
-
-.product-card:hover {
-
-
-}
 .product-image {
   max-width: 100%;
   height: 250px;
   border-radius: 4px;
   transition: background-color 0.3s ease;
-}
-
-.product-image:hover{
-    /* opacity: 0.6; */
 }
 
 .product-name {
@@ -197,4 +237,28 @@ color: white;
   font-size: 16px;
   color: #737373;
 }
+
+@media screen and (max-width: 768px) {
+.overlay-text {
+    padding: 10px; /* Adjust padding as needed */
+    font-size: 14px; 
+    font-weight: 600;
+}
+.filter-sort-buttons{
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+  .filter-products{
+    width: 120px;
+    font-size: 14px;
+    font-weight: 400;
+    height: 35px;
+    padding: 0px;
+  }
+
+}
+
+
 </style>
