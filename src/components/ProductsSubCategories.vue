@@ -17,19 +17,17 @@
 
    
     <!-- Add the FilterPage component here -->
-  <filter-page :show-filter-page="showFilterMenu" @apply-filters="applyFilters" @sort-products="sortProducts"></filter-page>
+    <filter-page :show-filter-page="showFilterMenu" @apply-filters="applyFilters" @sort-products="sortProducts"></filter-page>
 
 
     <div class="product-container">
-      <div v-for="(product) in filteredProducts" :key="product.id" class="product-card">
+      <div v-for="(product) in filteredProducts" :key="product.id" class="product-card" @click="navigateToSubcategory(product.name)">
         <!-- Decode the JSON string to get an array of image URLs -->
         <img :src="JSON.parse(product.images)[0]" alt="Product Image" class="product-image">
         <p class="product-name">{{ product.name }}</p>
         <p class="product-price">${{ product.price }}</p>
       </div>
-  </div>
-
-
+    </div>
 </template>
 
 
@@ -49,16 +47,13 @@ export default {
 
       // Add data properties for selected filters here
       selectedPriceFilter: { min: 0, max: 150 }, // Initialize with default values
-
       selectedColorFilter: '',
 
       // Add a property for the filtered products
       filteredProducts: [],
-
       //search
       searchValue: '',
     };
-
   },
   
   created() {
@@ -105,11 +100,9 @@ export default {
     }else {
       // Default sorting or any other sorting logic you need
     }
-
     this.showFilterMenu = false; // Close the filter page
   },
   
-
     fetchProducts(subcategoryName) {
       axios
         .get(`http://127.0.0.1:8000/api/productsname/${subcategoryName}`, {
@@ -153,6 +146,9 @@ export default {
     },
 
 
+    navigateToSubcategory(parentName) {
+      this.$router.push({ name: 'product', params: { parentName } });
+    },
 
    },
 };

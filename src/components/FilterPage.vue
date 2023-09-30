@@ -70,6 +70,7 @@
   
   
   <script>
+  
   import "@fortawesome/fontawesome-free/css/all.css";
   import axios from "axios";
   
@@ -131,7 +132,7 @@
         this.maxPrice = 150;
       } else {
         console.log('assala');
-        // Emit an event to inform the parent component (your original component) about the selected filters
+        // Emit an event to inform the parent component (ProductSubCate component) about the selected filters
         this.$emit('apply-filters', {
           price: { min, max },
           color: this.selectedColorFilter,
@@ -143,7 +144,6 @@
   },
 };
 </script>
-  
   
   
 <style scoped>

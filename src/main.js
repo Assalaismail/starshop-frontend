@@ -37,6 +37,7 @@ import ContactUs from './components/ContactUs.vue'
 import WishlistProduct from './components/WishlistProduct.vue'
 import ProductsSubCategories from './components/ProductsSubCategories.vue'
 import PasswordReset from './components/PasswordReset.vue'
+import SingleProductSubCategory from './components/SingleProductSubCategory.vue'
 
 const routes = [
   {
@@ -51,6 +52,7 @@ const routes = [
       { path: '/category/:categoryName', component: HomePageLandingPage },
 
       { path: '/product-categories/:subcategoryName',  name: 'subcategory', component: ProductsSubCategories,  props: true,},
+      { path: '/product-categories/:parentName',  name: 'product', component: SingleProductSubCategory,  props: true,},
 
       { path: '/password-reset', component: PasswordReset },
     ],
