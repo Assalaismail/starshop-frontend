@@ -13,6 +13,7 @@
         <input type="text" v-model="searchValue" placeholder="Search" id="search-input" @input="filterProducts" class="search"/>
         <i class="fa fa-search"></i>
       </div>
+
     </div>
 
    
@@ -28,6 +29,7 @@
         <p class="product-price">${{ product.price }}</p>
       </div>
     </div>
+    
 </template>
 
 
