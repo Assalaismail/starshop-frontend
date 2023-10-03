@@ -5,7 +5,7 @@
         <div
           v-for="(product, productIndex) in products"
           :key="product.id"
-          class="thumbnail"
+         
           @click="showImage(productIndex)"
         >
           <img
@@ -167,7 +167,6 @@ export default {
   gap: 100px;
 }
 
-/* Left side (images) */
 .single-image {
   width: 200px;
   height: 200px;
@@ -181,15 +180,16 @@ export default {
   padding-left: 10px;
 }
 
-/* Right side (text) */
 
 .firstName {
   font-size: 30px;
   text-transform: uppercase;
+  text-align: start;
+  width: 400px;
 }
 
 .name-status{
-border-bottom: 1px solid #737373;
+  border-bottom: 1px solid #737373;
 }
 
 .text-green {
@@ -200,12 +200,10 @@ border-bottom: 1px solid #737373;
 .text-red {
   color: red;
   text-align: start;
-
 }
 
 .sku-price{
   text-align: start;
-
 }
 
 .single-price{
@@ -260,9 +258,6 @@ border-bottom: 1px solid #737373;
 }
 
 .big-image {
-  /* max-width: 100%;
-  max-height: 400px; */
-
   width: 400px;
 }
 </style>
