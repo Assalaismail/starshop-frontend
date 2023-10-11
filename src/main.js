@@ -39,6 +39,13 @@ import ProductsSubCategories from './components/ProductsSubCategories.vue'
 import PasswordReset from './components/PasswordReset.vue'
 import SingleProductSubCategory from './components/SingleProductSubCategory.vue'
 
+// main.js
+import 'gitart-vue-dialog/dist/style.css'
+import { GDialog } from 'gitart-vue-dialog'
+
+
+
+
 const routes = [
   {
     path: '/',
@@ -67,6 +74,7 @@ const router = createRouter({
 const app = createApp(App)
 
 app.use(router);
+app.component('GDialog', GDialog)
 
 
 app.mount('#app')

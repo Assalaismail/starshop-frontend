@@ -44,9 +44,10 @@
 
     </div>
 
+
     <div class="sku-price">
     <p class="sku">
-       SKU: {{ products.length > 0 ? products[0].sku : 'No products available' }}
+       SKU: {{ selectedSKU }}
     </p>
 
     <p class="single-price">
@@ -67,9 +68,16 @@
         <option v-for="size in sizesByColor(selectedColor)" :key="size">{{ size }}</option>
       </select>
 
+      <div class="quantity-container">
+      <p>Quantity</p>
+      <input v-model="quantity" type="number" min="1" max="999" @input="checkQuantity" />
+      <p v-if="quantityUnavailable" class="text-red">Maximum Quantity is {{maxQuantity }} !</p>
+    </div>
 
-     
 
+    <div class="size-guide">
+     <size-guide></size-guide>
+    </div>
 
     </div>
 
@@ -78,8 +86,13 @@
 
 <script>
 import axios from "axios";
+import SizeGuide from '../components/SizeGuide.vue';
+
 
 export default {
+  components:{
+SizeGuide,
+  },
   props: ['parentName'],
 
   data() {
@@ -88,12 +101,14 @@ export default {
       selectedColor: "", // To store the selected color
       selectedSize: "", // To store the selected size
       selectedImage: null,
+      quantity: 1, // Default quantity
     };
   },
 
   created() {
     // Fetch data based on the subcategory name
     this.fetchProducts(this.parentName);
+    
   },
 
   watch: {
@@ -120,6 +135,31 @@ export default {
       });
       return Array.from(colorSet);
     },
+
+
+    selectedSKU() {
+      if (this.selectedColor && this.selectedSize) {
+        const product = this.products.find(
+          (p) => p.color === this.selectedColor && p.size === this.selectedSize
+        );
+        return product ? product.sku : 'No products available';
+      } else {
+        return this.products.length > 0 ? this.products[0].sku : 'No products available';
+      }
+    },
+
+    maxQuantity() {
+      if (this.selectedColor && this.selectedSize) {
+        const product = this.products.find(
+          (p) => p.color === this.selectedColor && p.size === this.selectedSize
+        );
+        return product ? product.quantity : 1;
+      } else {
+        return 1;
+      }
+    },
+
+
   },
 
   methods: {
@@ -155,6 +195,22 @@ export default {
       this.selectedImage = images[0];
     },
 
+    checkQuantity() {
+      if (this.selectedColor && this.selectedSize) {
+        const product = this.products.find(
+          (p) => p.color === this.selectedColor && p.size === this.selectedSize
+        );
+
+        if (product) {
+          if (this.quantity > product.quantity) {
+            this.quantity = product.quantity;
+            this.quantityUnavailable = true;
+          } else {
+            this.quantityUnavailable = false;
+          }
+        }
+      }
+    },
 
   },
 };
@@ -178,6 +234,7 @@ export default {
   flex-direction: column;
   align-items: start;
   padding-left: 10px;
+ 
 }
 
 
@@ -259,5 +316,24 @@ export default {
 
 .big-image {
   width: 400px;
+}
+
+.quantity-container{
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    align-items: start;
+
+}
+
+.body-cl2{
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.size-guide{
+margin-top: 50px;
 }
 </style>
