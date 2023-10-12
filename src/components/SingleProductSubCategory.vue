@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="column-2">
+  <div class="column-2">
 
     <div class="name-status">
       <p class="firstName">
@@ -44,6 +44,9 @@
 
     </div>
 
+    <div class="add-to-wishlist">
+     <a href="#" class="wish-heart" @click="addToWishlist"><i class="fas fa-heart"></i>Add to wishlist</a>
+    </div>
 
     <div class="sku-price">
     <p class="sku">
@@ -56,13 +59,13 @@
 
   </div>
 
-    <p>Color</p>
+    <p class="color">Color</p>
       <select v-model="selectedColor" class="select-color">
         <option value="" disabled>Select color</option>
         <option v-for="color in uniqueColors" :key="color" :value="color">{{ color }}</option>
       </select>
 
-      <p>Size</p>
+      <p class="size">Size</p>
       <select v-model="selectedSize" class="select-size">
         <option value="" disabled>Select size</option> 
         <option v-for="size in sizesByColor(selectedColor)" :key="size">{{ size }}</option>
@@ -81,6 +84,8 @@
 
     </div>
 
+     <!-- Include the Wishlist component and pass the wishlist data -->
+     <wishlist-product :wishlist="wishlist"></wishlist-product>
   </div>
 </template>
 
@@ -89,9 +94,11 @@ import axios from "axios";
 import SizeGuide from '../components/SizeGuide.vue';
 
 
+
 export default {
   components:{
-SizeGuide,
+  SizeGuide,
+
   },
   props: ['parentName'],
 
@@ -102,6 +109,7 @@ SizeGuide,
       selectedSize: "", // To store the selected size
       selectedImage: null,
       quantity: 1, // Default quantity
+      wishlist: [], // Array to store wishlist items
     };
   },
 
@@ -212,6 +220,26 @@ SizeGuide,
       }
     },
 
+
+    addToWishlist() {
+      if (this.products.length > 0) {
+        const product = this.products[0]; // Assuming you want to add the first product in the list
+        const wishlistItem = {
+          image: JSON.parse(product.images)[0],
+          name: product.name,
+          price: product.price,
+        };
+    
+        console.log("Wishlist Item", wishlistItem);
+    
+        this.wishlist.push(wishlistItem);
+  
+        alert("product added succesfully to wishlist");
+
+        console.log("Added to wishlist:", wishlistItem);
+      }
+    },
+
   },
 };
 </script>
@@ -232,7 +260,7 @@ SizeGuide,
 .column-2{
   display: flex;
   flex-direction: column;
-  align-items: start;
+  /* align-items: start; */
   padding-left: 10px;
  
 }
@@ -335,5 +363,20 @@ SizeGuide,
 
 .size-guide{
 margin-top: 50px;
+}
+
+.add-to-wishlist{
+  /* align-items: end !important; */
+  margin-top: 20px ;
+  text-align: end;
+  color: black;
+}
+
+.wish-heart{
+  color: black;
+}
+
+.color, .size, .size-guide{
+  text-align: start;
 }
 </style>

@@ -55,7 +55,7 @@ const routes = [
       { path: 'login', component: LoginUser },
       { path: 'register', component: RegisterUser },
       { path: 'contact', component: ContactUs },
-      { path: 'wishlist', component: WishlistProduct },
+      { path: 'wishlist', component: WishlistProduct, props:true, },
       { path: '/category/:categoryName', component: HomePageLandingPage },
 
       { path: '/product-categories/:subcategoryName',  name: 'subcategory', component: ProductsSubCategories,  props: true,},
