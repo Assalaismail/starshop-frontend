@@ -26,7 +26,7 @@
 
   <div class="column-2">
 
-    <div class="name-status">
+  <div class="name-status">
       <p class="firstName">
         {{ products.length > 0 ? products[0].name : 'No products available' }}
       </p>
@@ -41,11 +41,10 @@
         <p class="default-instock">(In Stock)</p>
       </div>
 
-
-    </div>
+  </div>
 
     <div class="add-to-wishlist">
-     <a href="#" class="wish-heart" @click="addToWishlist"><i class="fas fa-heart"></i>Add to wishlist</a>
+       <a href="#" class="wish-heart" @click="addToWishlist"><i class="fas fa-heart"></i>Add to wishlist</a>
     </div>
 
   <div class="sku-price">
@@ -79,6 +78,11 @@
 
     <div class="size-guide">
        <size-guide></size-guide>
+    </div>
+
+    <div class="buttons-cart-quick" >
+      <button class="btn-add-to-cart">Add To Cart</button>
+      <button class="btn-quick-by">Quick By</button>
     </div>
 
   </div>
@@ -219,7 +223,7 @@ export default {
 
 addToWishlist() {
   if (this.products.length > 0) {
-    const product = this.products[0]; // Assuming you want to add the first product in the list
+    const product = this.products[0];
     const wishlistItem = {
       image: JSON.parse(product.images)[0],
       name: product.name,
@@ -259,9 +263,7 @@ addToWishlist() {
 .column-2{
   display: flex;
   flex-direction: column;
-  /* align-items: start; */
   padding-left: 10px;
- 
 }
 
 
@@ -346,11 +348,10 @@ addToWishlist() {
 }
 
 .quantity-container{
-    display: flex;
-    flex-direction: column;
-    text-align: start;
-    align-items: start;
-
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  align-items: start;
 }
 
 .body-cl2{
@@ -361,7 +362,7 @@ addToWishlist() {
 }
 
 .size-guide{
-margin-top: 50px;
+  margin-top: 50px;
 }
 
 .add-to-wishlist{
@@ -378,4 +379,53 @@ margin-top: 50px;
 .color, .size, .size-guide{
   text-align: start;
 }
+
+.size-guide{
+  padding-bottom: 20px;
+  border-bottom: 1px solid #737373;
+}
+
+.buttons-cart-quick{
+  display: flex;
+  align-items: start;
+  margin-top: 30px;
+}
+
+.btn-add-to-cart{
+  border: none;
+  background-color: white;
+  border: 1px solid #888;
+  color: #737373;
+  text-transform: uppercase;
+  padding: 10px;
+  border-radius: 50px;
+  width: 150px;
+  height: 54px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.btn-add-to-cart:hover, .btn-quick-by:hover{
+  background-color: #737373;
+  color: white;
+
+}
+.btn-quick-by{
+  border: none;
+  background-color: white;
+  border: 1px solid #737373;
+  color: #737373;
+  text-transform: uppercase;
+  padding: 10px;
+  border-radius: 50px;
+  width: 150px;
+  height: 54px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 20px;
+}
+
+
 </style>

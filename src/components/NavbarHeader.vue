@@ -119,12 +119,15 @@
       </ul>
 
       <div class="cart-wish">
-        <li class="cart-icon"><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+        <li class="cart-icon"><a href="#" @click="toggleFilterMenu"><i class="fas fa-shopping-cart"></i></a></li>
         <li class="wishlist-icon"><a href="/wishlist"><i class="fas fa-heart"></i></a></li>
       </div>
 
     </div>
 </nav>
+
+<add-to-cart :show-cart-page="showFilterMenu" @apply-filters="applyFilters"></add-to-cart>
+
 
   <!-- Display subcategories as a card -->
     <div class="subcategories-card" v-if="subcategories.length > 0">
@@ -143,12 +146,22 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import axios from "axios";
 
+import AddToCart from '../components/AddToCart.vue'
+
+
 export default {
+  components: {
+   
+    AddToCart,
+  },
   data() {
     return {
       categories: [],
       subcategories: [],
       showMobileMenu: false,
+
+      showFilterMenu: false,
+
     };
   },
   
@@ -183,6 +196,10 @@ export default {
         .catch((error) => {
           console.error("Error fetching subcategories from API:", error);
         });
+    },
+
+    toggleFilterMenu() {
+      this.showFilterMenu = !this.showFilterMenu;
     },
 },
 

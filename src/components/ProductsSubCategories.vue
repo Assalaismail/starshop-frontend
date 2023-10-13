@@ -152,6 +152,7 @@ export default {
     navigateToSubcategory(parentName) {
       this.$router.push({ name: 'product', params: { parentName } });
     },
+    
    },
 };
 </script>

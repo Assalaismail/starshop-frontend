@@ -63,42 +63,42 @@ import 'vue3-toastify/dist/index.css';
   
 <style scoped>
 .wishlist-div {
-    width: 60%;
-    margin: 0 auto;
-    padding: 20px;
+  width: 60%;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 h1.wishlist {
-    font-size: 35px;
-    margin-top: 50px;
-    margin-bottom: 60px;
-    padding-bottom: 20px;
+  font-size: 35px;
+  margin-top: 50px;
+  margin-bottom: 60px;
+  padding-bottom: 20px;
 }
 
 .table-wish {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .table-tr {
-    color: black;
+  color: black;
 }
 
 .table-th {
-    padding: 10px;
-    text-align: left;
+  padding: 10px;
+  text-align: left;
 }
 
 .table-wish tr {
-    border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
 }
 
 .table-wish th {
-    padding: 10px;
-    margin-bottom: 10px;
-    text-align: start;
-    font-size: 20px;
-    font-weight: 500;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: start;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .table-wish td{
@@ -107,8 +107,8 @@ h1.wishlist {
 }
 
 .wishlist-image{
-    width: 125px;
-    height: 187px;
+  width: 125px;
+  height: 187px;
 }
 
 .buttons-wishlist{
@@ -121,33 +121,33 @@ h1.wishlist {
 
 .btn-add-wish{
   border: none;
-    background-color: white;
-    border: 1px solid #888;
-    color: #737373;
-    text-transform: uppercase;
-    padding: 10px;
-    border-radius: 50px;
-    width: 115px;
-    cursor: pointer;
+  background-color: white;
+  border: 1px solid #888;
+  color: #737373;
+  text-transform: uppercase;
+  padding: 10px;
+  border-radius: 50px;
+  width: 115px;
+  cursor: pointer;
 }
 
 .btn-add-wish:hover , .btn-remove-wish:hover{
-background-color: #737373;
-color: white;
+  background-color: #737373;
+  color: white;
 }
 
 
 .btn-remove-wish{
   border: none;
-    background-color: white;
-    border: 1px solid #888;
-    color: #737373;
-    text-transform: uppercase;
-    padding: 10px;
-    border-radius: 50px;
-    width: 115px;
-    cursor: pointer;
-    margin-left: 15px;
+  background-color: white;
+  border: 1px solid #888;
+  color: #737373;
+  text-transform: uppercase;
+  padding: 10px;
+  border-radius: 50px;
+  width: 115px;
+  cursor: pointer;
+  margin-left: 15px;
 }
 
 .no-products-message{

@@ -1,18 +1,18 @@
 <template>
-    <transition name="slide-in">
-      <div class="filter-page" v-if="showFilterPage">
-    <div class="filter-x">
+  <transition name="slide-in">
+    <div class="filter-page" v-if="showFilterPage">
+     <div class="filter-x">
       <p class="filter-title">Filter Products</p>
 
       <div class="close-icon" @click="applyFilters" >
         <i class="fas fa-times"></i>
       </div>
-    </div>
+     </div>
 
         <!-- Filter options go here -->
-        <div class="filter-options">
+    <div class="filter-options">
 
-         <div class="by-price">
+        <div class="by-price">
             <label>BY PRICE:</label>
 
           <div>
@@ -25,7 +25,7 @@
             <p>Selected Price Range: {{ minPrice }} - {{ maxPrice }}</p>
           </div>
 
-         </div>
+        </div>
 
          
          <div class="sort-by">
@@ -63,8 +63,8 @@
           <button @click="applyFilters" class="btn-apply-filter">Apply Filters</button>
         </div>
 
-        </div>
-      </div>
+    </div>
+    </div>
     </transition>
   </template>
   
