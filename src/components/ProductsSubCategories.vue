@@ -37,6 +37,7 @@
 import axios from "axios";
 import FilterPage from '../components/FilterPage.vue'
 
+
 export default {
   components: {
     FilterPage,

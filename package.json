@@ -22,7 +22,9 @@
     "vue-router": "^4.2.4",
     "vue-slick-carousel": "^1.0.6",
     "vue-slider-component": "^3.2.24",
-    "vueperslides": "^2.16.0"
+    "vue3-toastify": "^0.1.13",
+    "vueperslides": "^2.16.0",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

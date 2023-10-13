@@ -6,7 +6,7 @@
         <FooterFooter />
       </main>
     </section>
-  </template>
+</template>
   
   <script>
   import NavbarHeader from '../components/NavbarHeader.vue';
@@ -16,7 +16,7 @@
   const router = createRouter({
     history: createWebHistory(),
     routes: [
-      // Your routes configuration here
+      // routes configuration here
     ]
   });
   
@@ -30,6 +30,6 @@
   </script>
   
   <style scoped>
-  /* Add your styles here */
+
   </style>
   

@@ -48,7 +48,7 @@
      <a href="#" class="wish-heart" @click="addToWishlist"><i class="fas fa-heart"></i>Add to wishlist</a>
     </div>
 
-    <div class="sku-price">
+  <div class="sku-price">
     <p class="sku">
        SKU: {{ selectedSKU }}
     </p>
@@ -56,10 +56,9 @@
     <p class="single-price">
         ${{ products.length > 0 ? products[0].price : 'No products available' }}
     </p>
-
   </div>
 
-    <p class="color">Color</p>
+      <p class="color">Color</p>
       <select v-model="selectedColor" class="select-color">
         <option value="" disabled>Select color</option>
         <option v-for="color in uniqueColors" :key="color" :value="color">{{ color }}</option>
@@ -71,7 +70,7 @@
         <option v-for="size in sizesByColor(selectedColor)" :key="size">{{ size }}</option>
       </select>
 
-      <div class="quantity-container">
+    <div class="quantity-container">
       <p>Quantity</p>
       <input v-model="quantity" type="number" min="1" max="999" @input="checkQuantity" />
       <p v-if="quantityUnavailable" class="text-red">Maximum Quantity is {{maxQuantity }} !</p>
@@ -79,21 +78,19 @@
 
 
     <div class="size-guide">
-     <size-guide></size-guide>
+       <size-guide></size-guide>
     </div>
 
-    </div>
+  </div>
 
-     <!-- Include the Wishlist component and pass the wishlist data -->
-     <wishlist-product :wishlist="wishlist"></wishlist-product>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import SizeGuide from '../components/SizeGuide.vue';
-
-
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
   components:{
@@ -220,25 +217,27 @@ export default {
       }
     },
 
+addToWishlist() {
+  if (this.products.length > 0) {
+    const product = this.products[0]; // Assuming you want to add the first product in the list
+    const wishlistItem = {
+      image: JSON.parse(product.images)[0],
+      name: product.name,
+      price: product.price,
+    };
 
-    addToWishlist() {
-      if (this.products.length > 0) {
-        const product = this.products[0]; // Assuming you want to add the first product in the list
-        const wishlistItem = {
-          image: JSON.parse(product.images)[0],
-          name: product.name,
-          price: product.price,
-        };
-    
-        console.log("Wishlist Item", wishlistItem);
-    
-        this.wishlist.push(wishlistItem);
-  
-        alert("product added succesfully to wishlist");
+    this.wishlist.push(wishlistItem);
 
-        console.log("Added to wishlist:", wishlistItem);
-      }
-    },
+    // Save the updated wishlist to local storage
+    localStorage.setItem('wishlist', JSON.stringify(this.wishlist));
+    toast.success('Product added successfully to wishlist'); // Show a success toast
+    // console.log("Added to wishlist:", wishlistItem);
+    // console.log("Wishlist in Product Component:", this.wishlist);
+  }
+  else{
+    toast.error('This is an error!');
+  }
+},
 
   },
 };
