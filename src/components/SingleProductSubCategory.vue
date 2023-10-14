@@ -81,7 +81,7 @@
     </div>
 
     <div class="buttons-cart-quick" >
-      <button class="btn-add-to-cart">Add To Cart</button>
+      <button class="btn-add-to-cart"  @click="addToCart">Add To Cart</button>
       <button class="btn-quick-by">Quick By</button>
     </div>
 
@@ -111,6 +111,7 @@ export default {
       selectedImage: null,
       quantity: 1, // Default quantity
       wishlist: [], // Array to store wishlist items
+      cart: [], // Array to store wishlist items
     };
   },
 
@@ -243,11 +244,48 @@ addToWishlist() {
   }
 },
 
+
+addToCart() {
+  if (this.products.length > 0) {
+    const selectedProduct = this.products.find(
+      (product) =>
+        product.color === this.selectedColor && product.size === this.selectedSize
+    );
+
+    if (selectedProduct) {
+      const cartItem = {
+        id: selectedProduct.id, // Assuming each product has a unique ID
+        image: JSON.parse(selectedProduct.images)[0],
+        name: selectedProduct.name,
+        price: selectedProduct.price,
+        color: selectedProduct.color,
+        size: selectedProduct.size,
+        quantity: this.quantity,
+      };
+
+      this.cart.push(cartItem);
+
+      // Save the updated cart to local storage
+      localStorage.setItem('cart', JSON.stringify(this.cart));
+
+      console.log("Added to cart:", cartItem);
+
+    console.log("Cart in Product Component:", this.cart);
+
+      toast.success('Product added successfully to the cart');
+    }
+  } else {
+    toast.error('This is an error!');
+  }
+},
+
+
   },
 };
 </script>
 
 <style scoped>
+
 .single-page {
   display: flex;
   justify-content: center;
@@ -409,8 +447,8 @@ addToWishlist() {
 .btn-add-to-cart:hover, .btn-quick-by:hover{
   background-color: #737373;
   color: white;
-
 }
+
 .btn-quick-by{
   border: none;
   background-color: white;
@@ -426,6 +464,4 @@ addToWishlist() {
   font-size: 18px;
   margin-left: 20px;
 }
-
-
 </style>

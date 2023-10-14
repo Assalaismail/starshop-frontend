@@ -70,7 +70,7 @@ export default {
     },
 
      // Add a method to handle input in the search bar and filter products
-     filterProducts() {
+    filterProducts() {
       this.filteredProducts = this.products.filter((product) => {
         // Filter by product name (case-insensitive)
         return product.name.toLowerCase().includes(this.searchValue.toLowerCase());
@@ -148,15 +148,12 @@ export default {
       this.showFilterMenu = false; // Close the filter page
     },
 
-
     navigateToSubcategory(parentName) {
       this.$router.push({ name: 'product', params: { parentName } });
     },
-    
    },
 };
 </script>
-
 
 
 <style scoped>

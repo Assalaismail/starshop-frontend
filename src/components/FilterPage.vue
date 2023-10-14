@@ -7,6 +7,7 @@
       <div class="close-icon" @click="applyFilters" >
         <i class="fas fa-times"></i>
       </div>
+
      </div>
 
         <!-- Filter options go here -->
@@ -24,11 +25,10 @@
 
             <p>Selected Price Range: {{ minPrice }} - {{ maxPrice }}</p>
           </div>
-
         </div>
 
          
-         <div class="sort-by">
+        <div class="sort-by">
           <label>SORT BY:</label>
           <select class="sortby" v-model="sortBy" @change="sortProducts">
             <option value="Default">Default</option>
@@ -62,15 +62,13 @@
         <div>
           <button @click="applyFilters" class="btn-apply-filter">Apply Filters</button>
         </div>
-
     </div>
-    </div>
-    </transition>
-  </template>
+  </div>
+  </transition>
+</template>
   
   
-  <script>
-  
+<script>
   import "@fortawesome/fontawesome-free/css/all.css";
   import axios from "axios";
   
@@ -125,7 +123,7 @@
 
       // Perform any necessary validation
       if (isNaN(min) || isNaN(max) || min < 0 || max < 0 || min > max) {
-        // Handle invalid range (e.g., display an error message)
+
         console.error('Invalid price range');
         // Optionally, reset the values or display an error message
         this.minPrice = 0;
