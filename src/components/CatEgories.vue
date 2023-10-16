@@ -62,6 +62,7 @@ export default {
   text-align: center;
   padding: 10px;
   align-items: center;
+  cursor: pointer;
 }
 
 .card img {

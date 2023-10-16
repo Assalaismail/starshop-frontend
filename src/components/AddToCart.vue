@@ -16,14 +16,22 @@
 
 
           <div v-for="(item, index) in cart" :key="index" class="cart-item">
-            <img :src="item.image" alt="Cart Item Image" class="cart-image" />
+            <img :src="item.image" alt="Cart Item Image" class="cart-image"/>
             <div class="name-size-color-qty">
                <p class="cart-name">{{ item.name }}</p>
                <p class="cart-size-color">(<span>Size:</span> {{ item.size }}, <span>Color:</span> {{ item.color }}) </p>
                <p class="cart-price"> {{item.quantity}} x ${{ item.price }}</p>
             </div>
-            <button class="btn-remove-cart" @click="removeFromCart(index)">x</button>
+               <button class="btn-remove-cart" @click="removeFromCart(index)">x</button>
           </div>
+
+
+          <div class="div-subtotal">
+             <p class="subtotal">  Sub Total: </p>
+             <p class="subtotal-price">${{ subtotal }}</p> 
+          </div>
+
+
     </div>
   </transition>
 </template>
@@ -41,29 +49,37 @@ export default {
   data() {
     return {
       cart: [],
-      isCartOpen: true,
     };
   },
+
+  computed: {
+  subtotal() {
+    return this.cart.reduce((total, item) => total + item.quantity * item.price, 0);
+  },
+},
+
 
   created() {
     // Retrieve the cart data from local storage
     const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
+    if (storedCart){
       this.cart = JSON.parse(storedCart);
     }
   },
 
   methods: {
 
-    closeCart() {
-      this.isCartOpen = false; // Set the cart to be closed
+
+    closeCart(){
+      this.$emit('update:showCartPage', false); // Emit an event to close the cart
     },
 
-    removeFromCart(index) {
+    removeFromCart(index){
       this.cart.splice(index, 1); // Remove the item from the cart array
       localStorage.setItem('cart', JSON.stringify(this.cart)); // Update local storage
       toast.success('Item removed from cart'); // Show a success toast
     },
+
   },
 };
 </script>
@@ -72,7 +88,7 @@ export default {
 <style scoped>
 .slide-in-enter-active, .slide-in-leave-active {
   transition: transform 0.3s;
- }
+}
 .slide-in-enter, .slide-in-leave-to {
   transform: translateX(100%); /* Slide in from the right */
 }
@@ -86,7 +102,6 @@ export default {
   box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2); /* Add shadow for a better visual effect */
   z-index: 1000; /* Ensure the filter page is above other content */
 }
-
 .filter-x {
   display: flex;
   justify-content: space-between;
@@ -94,7 +109,6 @@ export default {
   background-color: #7f9096;
   height: 60px;
 }
-
 .filter-title {
   margin: 0;
   padding: 10px;
@@ -135,6 +149,22 @@ export default {
 
 .btn-remove-cart:hover{
   color: #7f9096
+}
+
+.div-subtotal{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.subtotal{
+  font-size: 18px;
+}
+
+.subtotal-price{
+  font-size: 18px;
+
 }
 
 </style>

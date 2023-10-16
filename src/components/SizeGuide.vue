@@ -81,9 +81,7 @@
     <a class="sg" @click="dialogState = true">
       Size Guide
     </a>
-    
-
-  </template>
+</template>
 
 
 <script>

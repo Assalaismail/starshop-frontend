@@ -103,14 +103,14 @@
         console.log("API Response - Colors:", colorResponse.data);
         console.log("API Response - Sizes:", sizeResponse.data);
         this.colors = colorResponse.data.data;
-        this.sizes = sizeResponse.data.data;
+        this.sizes =  sizeResponse.data.data;
       })
       .catch((error) => {
         console.error("Error fetching data from API:", error);
       });
   },
-  methods: {
 
+  methods: {
     sortProducts() {
     this.$emit('sort-products', this.sortBy);
   },
@@ -145,24 +145,26 @@
   
   
 <style scoped>
-  .slide-in-enter-active, .slide-in-leave-active {
-    transition: transform 0.3s;
-  }
-  .slide-in-enter, .slide-in-leave-to {
-    transform: translateX(100%); /* Slide in from the right */
-  }
-  .filter-page {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 400px; /* Adjust as needed */
-    background-color: white;
-    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2); /* Add shadow for a better visual effect */
-    z-index: 1000; /* Ensure the filter page is above other content */
+.slide-in-enter-active, .slide-in-leave-active {
+  transition: transform 0.3s;
   }
 
-  .filter-x {
+.slide-in-enter, .slide-in-leave-to {
+  transform: translateX(100%); /* Slide in from the right */
+  }
+
+.filter-page {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 400px; /* Adjust as needed */
+  background-color: white;
+  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2); /* Add shadow for a better visual effect */
+  z-index: 1000; /* Ensure the filter page is above other content */
+  }
+
+.filter-x {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -191,19 +193,20 @@
 .range{
   width: 500px;
 }
+
 .price-range {
   display: flex;
   align-items: center;
 }
 
 .by-price , .by-color, .by-size, .sort-by{
-display: flex;
-flex-direction: column;
-align-items: start;
-gap: 20px;
-margin-bottom: 20px;
-padding: 10px;
-border-bottom: 1px solid #737373;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #737373;
 }
 
 .btn-apply-filter{
@@ -231,8 +234,8 @@ border-bottom: 1px solid #737373;
   border-radius: 5px;
   text-align: center;
   font-size: 16px;
- width: 120px;
- height: 56px;
+  width: 120px;
+  height: 56px;
 }
   
 </style>

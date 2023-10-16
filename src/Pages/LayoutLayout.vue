@@ -8,7 +8,7 @@
     </section>
 </template>
   
-  <script>
+<script>
   import NavbarHeader from '../components/NavbarHeader.vue';
   import FooterFooter from '../components/FooterFooter.vue';
   import { createRouter, createWebHistory } from 'vue-router';
@@ -27,9 +27,9 @@
     },
     router
   };
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
 
-  </style>
+</style>
   

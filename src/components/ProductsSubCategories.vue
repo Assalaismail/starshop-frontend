@@ -142,7 +142,6 @@ export default {
         // Check if the product matches the selected color filter
         const colorMatches =
           !this.selectedColorFilter || product.color === this.selectedColorFilter;
-
         return priceInRange && colorMatches;
       });
       this.showFilterMenu = false; // Close the filter page
@@ -158,24 +157,24 @@ export default {
 
 <style scoped>
 .img-background-products {
-    position: relative;
-    margin-top: 30px;
+  position: relative;
+  margin-top: 30px;
 }
 
 .img-background-products img{
-    object-fit: cover ;
-    max-width: 100%;
+  object-fit: cover ;
+  max-width: 100%;
 }
 .overlay-text {
-    position: absolute;
-    text-transform: uppercase;
-    top: 50%; /* Adjust the top value to position the text vertically */
-    left: 50%; /* Adjust the left value to position the text horizontally */
-    transform: translate(-50%, -50%);
-    padding: 10px; /* Adjust padding as needed */
-    color: white;
-    font-size: 53px; 
-    font-weight: 600;
+  position: absolute;
+  text-transform: uppercase;
+  top: 50%; /* Adjust the top value to position the text vertically */
+  left: 50%; /* Adjust the left value to position the text horizontally */
+  transform: translate(-50%, -50%);
+  padding: 10px; /* Adjust padding as needed */
+  color: white;
+  font-size: 53px; 
+  font-weight: 600;
 }
 .filter-sort-buttons {
   display: flex;
@@ -187,27 +186,27 @@ export default {
 }
 
 .filter-products{
-    align-items: start;
-    border: none;
-    background-color: white;
-    border: 1px solid #888;
-    color: #737373;
-    text-transform: uppercase;
-    padding: 20px;
-    border-radius: 50px;
-    width: 250px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
+  align-items: start;
+  border: none;
+  background-color: white;
+  border: 1px solid #888;
+  color: #737373;
+  text-transform: uppercase;
+  padding: 20px;
+  border-radius: 50px;
+  width: 250px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .filter-products:hover{
-background-color: #737373;
-color: white;
+  background-color: #737373;
+  color: white;
 }
 
 .search-icon{
- margin-right: 30px;
+  margin-right: 30px;
 }
 .search {
   border: none;
@@ -230,6 +229,7 @@ color: white;
   margin-top: 50px;
   justify-content: center;
 }
+
 .product-card {
   flex: 0 1 calc(12.67% - 20px); /* Adjust the width of each card (6 cards per row) */
   padding: 10px;
@@ -242,6 +242,7 @@ color: white;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
+
 .product-image {
   max-width: 100%;
   height: 250px;
@@ -262,30 +263,30 @@ color: white;
 
 @media screen and (max-width: 768px) {
 .overlay-text {
-    padding: 10px; /* Adjust padding as needed */
-    font-size: 14px; 
-    font-weight: 600;
+  padding: 10px; /* Adjust padding as needed */
+  font-size: 14px; 
+  font-weight: 600;
 }
 .filter-sort-buttons{
-    display: flex;
-    flex-direction: row;
-    margin-top: 30px;
-    margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  margin-left: 10px;
 }
-  .filter-products{
-    width: 120px;
-    font-size: 14px;
-    font-weight: 400;
-    height: 35px;
-    padding: 0px;
-  }
+.filter-products{
+  width: 120px;
+  font-size: 14px;
+  font-weight: 400;
+  height: 35px;
+  padding: 0px;
+}
 
-  .search {
+.search {
   width: 100px;
 }
 
 .search-icon{
- margin-right: 10px;
+  margin-right: 10px;
 }
 
 }

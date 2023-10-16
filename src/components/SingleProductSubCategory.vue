@@ -80,6 +80,8 @@
        <size-guide></size-guide>
     </div>
 
+    <div class="out-of-stock-message" v-if="outOfStockMessage">{{ outOfStockMessage }}</div>
+
     <div class="buttons-cart-quick" >
       <button class="btn-add-to-cart"  @click="addToCart">Add To Cart</button>
       <button class="btn-quick-by">Quick By</button>
@@ -99,7 +101,6 @@ import 'vue3-toastify/dist/index.css';
 export default {
   components:{
   SizeGuide,
-
   },
   props: ['parentName'],
 
@@ -112,6 +113,8 @@ export default {
       quantity: 1, // Default quantity
       wishlist: [], // Array to store wishlist items
       cart: [], // Array to store wishlist items
+
+      outOfStockMessage: '',
     };
   },
 
@@ -246,38 +249,42 @@ addToWishlist() {
 
 
 addToCart() {
-  if (this.products.length > 0) {
-    const selectedProduct = this.products.find(
-      (product) =>
-        product.color === this.selectedColor && product.size === this.selectedSize
-    );
+      if (this.products.length > 0) {
+        const selectedProduct = this.products.find(
+          (product) =>
+            product.color === this.selectedColor && product.size === this.selectedSize
+        );
 
-    if (selectedProduct) {
-      const cartItem = {
-        id: selectedProduct.id, // Assuming each product has a unique ID
-        image: JSON.parse(selectedProduct.images)[0],
-        name: selectedProduct.name,
-        price: selectedProduct.price,
-        color: selectedProduct.color,
-        size: selectedProduct.size,
-        quantity: this.quantity,
-      };
+        if (selectedProduct) {
+          if (selectedProduct.stock_status === 'Out of Stock') {
+            // Set the out of stock message
+            this.outOfStockMessage = 'This product is out of stock and cannot be added to the cart!';
+          } else {
+            this.outOfStockMessage = ''; // Reset the message
+            // Rest of your addToCart logic
+            const cartItem = {
+              id: selectedProduct.id,
+              image: JSON.parse(selectedProduct.images)[0],
+              name: selectedProduct.name,
+              price: selectedProduct.price,
+              color: selectedProduct.color,
+              size: selectedProduct.size,
+              quantity: this.quantity,
+            };
 
-      this.cart.push(cartItem);
+            this.cart.push(cartItem);
+            localStorage.setItem('cart', JSON.stringify(this.cart));
 
-      // Save the updated cart to local storage
-      localStorage.setItem('cart', JSON.stringify(this.cart));
+            console.log("Added to cart:", cartItem);
+            console.log("Cart in Product Component:", this.cart);
 
-      console.log("Added to cart:", cartItem);
-
-    console.log("Cart in Product Component:", this.cart);
-
-      toast.success('Product added successfully to the cart');
-    }
-  } else {
-    toast.error('This is an error!');
-  }
-},
+            toast.success('Product added successfully to the cart');
+          }
+        }
+      } else {
+        toast.error('This is an error!');
+      }
+    },
 
 
   },
@@ -463,5 +470,9 @@ addToCart() {
   cursor: pointer;
   font-size: 18px;
   margin-left: 20px;
+}
+
+.out-of-stock-message{
+  color:red;
 }
 </style>
