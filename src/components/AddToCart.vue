@@ -1,43 +1,44 @@
 <template>
   <transition name="slide-in">
     <div class="filter-page" v-if="showCartPage">
-     <div class="filter-x">
-      <p class="filter-title">Shopping Cart</p>
-
-      <div class="close-icon" @click="closeCart">
-        <i class="fas fa-times" ></i>
+      <div class="filter-x">
+        <p class="filter-title">Shopping Cart</p>
+        <div class="close-icon" >
+          <i class="fas fa-times"></i>
+        </div>
       </div>
 
-     </div>
+      <div v-if="cart.length === 0">
+        <p class="no-products-message">Your Cart is empty!</p>
+      </div>
 
-          <div v-if="cart.length === 0">
-            <p class="no-products-message">Your Cart is empty!</p>
-          </div>
+      <div class="panel-content">
 
+      <div v-for="(item, index) in cart" :key="index" class="cart-item">
+        <img :src="item.image" alt="Cart Item Image" class="cart-image" />
+        <div class="name-size-color-qty">
+          <p class="cart-name">{{ item.name }}</p>
+          <p class="cart-size-color">
+            (<span>Size:</span> {{ item.size }}, <span>Color:</span> {{ item.color }})
+          </p>
+          <p class="cart-price">{{ item.quantity }} x ${{ item.price }}</p>
+        </div>
+        <button class="btn-remove-cart" @click="removeFromCart(index)">x</button>
+      </div>
 
-          <div v-for="(item, index) in cart" :key="index" class="cart-item">
-            <img :src="item.image" alt="Cart Item Image" class="cart-image"/>
-            <div class="name-size-color-qty">
-               <p class="cart-name">{{ item.name }}</p>
-               <p class="cart-size-color">(<span>Size:</span> {{ item.size }}, <span>Color:</span> {{ item.color }}) </p>
-               <p class="cart-price"> {{item.quantity}} x ${{ item.price }}</p>
-            </div>
-               <button class="btn-remove-cart" @click="removeFromCart(index)">x</button>
-          </div>
+      <div class="div-subtotal">
+        <p class="subtotal">Sub Total:</p>
+        <p class="subtotal-price">${{ subtotal }}</p>
+      </div>
 
-
-          <div class="div-subtotal">
-             <p class="subtotal">  Sub Total: </p>
-             <p class="subtotal-price">${{ subtotal }}</p> 
-          </div>
-
+    </div>
 
     </div>
   </transition>
 </template>
 
+
 <script>
-  
 import "@fortawesome/fontawesome-free/css/all.css";
 import { toast } from 'vue3-toastify';
 
@@ -68,12 +69,6 @@ export default {
   },
 
   methods: {
-
-
-    closeCart(){
-      this.$emit('update:showCartPage', false); // Emit an event to close the cart
-    },
-
     removeFromCart(index){
       this.cart.splice(index, 1); // Remove the item from the cart array
       localStorage.setItem('cart', JSON.stringify(this.cart)); // Update local storage
@@ -92,6 +87,7 @@ export default {
 .slide-in-enter, .slide-in-leave-to {
   transform: translateX(100%); /* Slide in from the right */
 }
+
 .filter-page {
   position: fixed;
   top: 0;
@@ -103,6 +99,7 @@ export default {
   z-index: 1000; /* Ensure the filter page is above other content */
 }
 .filter-x {
+  flex: 1 1 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -156,6 +153,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   padding: 15px;
+  bottom: 0;
 }
 
 .subtotal{
