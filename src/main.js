@@ -38,6 +38,7 @@ import WishlistProduct from './components/WishlistProduct.vue'
 import ProductsSubCategories from './components/ProductsSubCategories.vue'
 import PasswordReset from './components/PasswordReset.vue'
 import SingleProductSubCategory from './components/SingleProductSubCategory.vue'
+import ViewCart from './components/ViewCart'
 
 // main.js
 import 'gitart-vue-dialog/dist/style.css'
@@ -60,6 +61,7 @@ const routes = [
 
       { path: '/product-categories/:subcategoryName',  name: 'subcategory', component: ProductsSubCategories,  props: true,},
       { path: '/product-categories/:parentName',  name: 'product', component: SingleProductSubCategory,  props: true,},
+      { path: '/cart', component: ViewCart},
 
       { path: '/password-reset', component: PasswordReset },
     ],
