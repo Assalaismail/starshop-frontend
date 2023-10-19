@@ -38,7 +38,8 @@ import WishlistProduct from './components/WishlistProduct.vue'
 import ProductsSubCategories from './components/ProductsSubCategories.vue'
 import PasswordReset from './components/PasswordReset.vue'
 import SingleProductSubCategory from './components/SingleProductSubCategory.vue'
-import ViewCart from './components/ViewCart'
+import ViewCart from './components/ViewCart.vue'
+import CheckoutPage from './components/CheckoutPage.vue'
 
 // main.js
 import 'gitart-vue-dialog/dist/style.css'
@@ -66,6 +67,9 @@ const routes = [
       { path: '/password-reset', component: PasswordReset },
     ],
   },
+
+  {path: '/checkout', component: CheckoutPage},
+
 ];
 
 const router = createRouter({

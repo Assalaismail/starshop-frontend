@@ -3,7 +3,7 @@
         <div class="filter-page" v-if="showCartPage">
             <div class="filter-x">
                 <p class="filter-title">Shopping Cart</p>
-                <div class="close-icon">
+                <div class="close-icon" @click="closeCart">
                     <i class="fas fa-times"></i>
                 </div>
             </div>
@@ -39,15 +39,16 @@
                     </div>
 
                     <div class="cart-buttons">
-                        <button class="checkout">Checkout <i class="fa-solid fa-arrow-right"></i></button>
+                        <button class="checkout" @click="closeCart">Checkout <i class="fa-solid fa-arrow-right"></i></button>
 
                         <router-link to="/cart">
-                            <button class="view-cart">View Cart <i class="fa-solid fa-arrow-right"></i></button>
+                            <button class="view-cart" @click="closeCart">View Cart <i class="fa-solid fa-arrow-right"></i></button>
                         </router-link>
                     </div>
 
                 </div>
               </div>
+              <toast />
         </div>
     </transition>
 </template>
@@ -86,6 +87,10 @@
         },
 
         methods: {
+
+          closeCart() {
+      this.$emit('close-cart'); // Emit an event to notify the parent component
+    },
             removeFromCart(index) {
                 this.cart.splice(index, 1); // Remove the item from the cart array
                 localStorage.setItem('cart', JSON.stringify(this.cart)); // Update local storage
@@ -94,20 +99,28 @@
 
 
             incrementQuantity(index) {
-                // Increase the quantity of the item in the cart
-                this.cart[index].quantity++;
+                const item = this.cart[index];
+                if (item.quantity < item.maxQuantity) {
+                    item.quantity++;
+                } else {
+                    toast.error('One or all products are not enough quantity so cannot update!');
+                }
             },
+
+
             decrementQuantity(index) {
                 // Decrease the quantity of the item in the cart, but not below 1
                 if (this.cart[index].quantity > 1) {
                     this.cart[index].quantity--;
                 }
             },
+
             updateQuantity(index, event) {
-                // Update the quantity of the item in the cart when the input field changes
+                // Update the quantity of the item in the cart when the input field changes, considering the maximum available quantity
                 const newQuantity = parseInt(event.target.value);
-                if (!isNaN(newQuantity) && newQuantity >= 1) {
-                    this.cart[index].quantity = newQuantity;
+                const item = this.cart[index];
+                if (!isNaN(newQuantity) && newQuantity >= 1 && newQuantity <= item.maxQuantity) {
+                    item.quantity = newQuantity;
                 }
             },
 
@@ -184,8 +197,7 @@
 
     .quantity-control {
         border: none;
-        align-items: center;
-        text-align: center;
+        display: flex;
     }
 
     .minus-btn {
@@ -255,6 +267,7 @@
         border: none;
         color: white;
         font-size: 16px;
+        cursor: pointer;
     }
 
     .view-cart {

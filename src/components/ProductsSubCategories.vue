@@ -187,7 +187,6 @@ export default {
 
 .filter-products{
   align-items: start;
-  border: none;
   background-color: white;
   border: 1px solid #888;
   color: #737373;

@@ -126,8 +126,7 @@
     </div>
 </nav>
 
-<add-to-cart :show-cart-page="showFilterMenu" @apply-filters="applyFilters"></add-to-cart>
-
+<add-to-cart :show-cart-page="showFilterMenu" @apply-filters="applyFilters" @close-cart="closeCart"></add-to-cart>
 
   <!-- Display subcategories as a card -->
     <div class="subcategories-card" v-if="subcategories.length > 0">
@@ -186,6 +185,13 @@ export default {
       this.$router.push({ name: 'subcategory', params: { subcategoryName } });
     },
 
+    openCart() {
+      this.showFilterMenu = true;
+    },
+    closeCart() {
+      this.showFilterMenu = false;
+    },
+
   fetchSubcategories(categoryName) {
       axios
         .get(`http://127.0.0.1:8000/api/subcategoryname/${categoryName}`)
@@ -209,6 +215,8 @@ export default {
       return window.innerWidth <= 768;
     },
   },
+
+ 
 };
 </script>
   

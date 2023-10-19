@@ -14,7 +14,7 @@
                 </tr>
 
                 <tr v-if="cart.length === 0">
-                    <td colspan="3" class="no-products-message">Your Cart is empty</td>
+                    <td colspan="6" class="no-products-message">Your Cart is empty!</td>
                 </tr>
 
 
@@ -53,6 +53,9 @@
                 </tr>
             </table>
 
+            <div class="checkout-div">
+                <button class="btn-checkout" onclick="window.location.href='/checkout'">Checkout</button>
+            </div>
 
         </div>
 
@@ -61,9 +64,10 @@
 </template>
 
 <script>
-
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+    import {
+        toast
+    } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
 
     export default {
         data() {
@@ -275,4 +279,31 @@ import 'vue3-toastify/dist/index.css';
         cursor: pointer;
         color: black;
     }
+
+
+    .checkout-div{
+        display: flex;
+        justify-content: end;
+    }
+    .btn-checkout {
+        cursor: pointer;
+        background-color: white;
+        border: 1px solid #888;
+        color: #737373;
+        text-transform: uppercase;
+        padding: 20px;
+        border-radius: 50px;
+        width: 150px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 20px;
+        text-decoration: none;
+    }
+
+    .btn-checkout:hover {
+        background-color: #737373;
+        color: white;
+    }
+
+
 </style>
