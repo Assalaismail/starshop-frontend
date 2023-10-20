@@ -9,7 +9,7 @@
 
                     <hr class="hr" />
                     <div class="shipping-address-div">
-                        <p class="Shipping-information">Shipping information </p>
+                        <p class="Shipping-information">Shipping information</p>
                         <p class="add-title">Select available addresses:</p>
 
                         <select class="add-new-address">
@@ -19,46 +19,42 @@
                         <input type="text" id="name" placeholder="Full Name" class="input-full-name" />
 
                         <div class="input-container">
-
                             <input type="text" id="email" placeholder="Email" class="input-email" />
                             <input type="text" id="phone" placeholder="Phone" class="input-phone" />
                         </div>
 
-
                         <select class="add-new-address">
                             <option value="" disabled>Choose your country</option>
-                            <option value="Lebanon" selected>Lebanon</option>
+                            <option v-for="country in countries" :key="country.id" :value="country.name">
+                                {{ country . name }}
+                            </option>
                         </select>
 
                         <div class="input-container">
                             <select class="input-email">
                                 <option value="" disabled selected>Choose your state</option>
-
                             </select>
-                            <input type="text" id="city" placeholder="city" class="input-phone" />
+                            <input type="text" id="city" placeholder="City" class="input-phone" />
                         </div>
 
                         <input type="text" id="address" placeholder="Address" class="input-full-name" />
                     </div>
 
-
                     <div class="shipping-address-div">
                         <p class="Shipping-method">Shipping method</p>
 
                         <div class="payment-checkout-form">
-                            <input type="hidden" name="shipping_option" value="1">
+                            <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul">
                                 <li class="shipping-method-li">
                                     <input type="radio" name="shipping_method" id="shipping-method-0" value="default"
-                                        data-option="0">
-                                    <label for="shipping-method-0">
-                                        Inside Beirut - $3.00
-                                    </label>
+                                        data-option="0" />
+                                    <label for="shipping-method-0"> Inside Beirut - $3.00 </label>
                                 </li>
 
                                 <li class="shipping-method-li">
                                     <input type="radio" name="shipping_method" id="shipping-method-1" value="default"
-                                        data-option="1">
+                                        data-option="1" />
                                     <label for="shipping-method-1">
                                         Same day delivery (Beirut) - $6.00
                                     </label>
@@ -67,48 +63,115 @@
                         </div>
                     </div>
 
-
                     <div class="shipping-address-div">
                         <p class="Shipping-method">Payment method</p>
 
                         <div class="payment-checkout-form">
-                            <input type="hidden" name="shipping_option" value="1">
+                            <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul">
                                 <li class="shipping-method-li">
                                     <input type="radio" name="shipping_method" id="shipping-method-0" value="default"
-                                        data-option="0">
-                                    <label for="shipping-method-0">
-                                        Pay online via Stripe
-                                    </label>
+                                        data-option="0" />
+                                    <label for="shipping-method-0"> Pay online via Stripe </label>
                                 </li>
 
                                 <li class="shipping-method-li">
                                     <input type="radio" name="shipping_method" id="shipping-method-1" value="default"
-                                        data-option="1">
+                                        data-option="1" />
                                     <label for="shipping-method-1">
                                         Cash on delivery (COD)
                                     </label>
-                                    
                                 </li>
                             </ul>
                         </div>
                     </div>
 
-
                     <div class="shipping-address-div">
                         <p class="note">Note</p>
 
-                        <textarea type="text" id="note" name="note" class="note-message" placeholder="Note..."/>
+                        <textarea type="text" id="note" name="note" class="note-message"
+                            placeholder="Note..." />
+                    </div>
 
-                      
+                    <div class="final-checkout">
+                        <a href="/cart" class="back-to-cart"><i class="fa-solid fa-arrow-left"></i> Back to cart</a>
+
+                        <button class="btn-finalcheckout">Checkout</button>
                     </div>
                 </form>
             </div>
 
-            <div class="second-column"></div>
+            <div class="second-column">
+                <p class="product">Product(s):</p>
+                <!-- ---------------------------------------------- -->
+                <div class="panel-content">
+                    <div v-for="(item, index) in cart" :key="index" class="checkout-item">
+                        <img :src="item.image" alt="Checkout Item Image" class="checkout-image" />
+                        <div class="name-size-color-qty">
+                            <p class="checkout-name">{{ item . name }}</p>
+                            <p class="checkout-size-color">
+                                (<span>Size:</span> {{ item . size }}, <span>Color:</span>
+                                {{ item . color }})
+                            </p>
+                        </div>
+                        <p class="checkout-price">${{ item . price }}</p>
+                    </div>
+
+                    <div class="div-subtotal">
+                        <div class="subtotal">
+                            <p class="subtotal-title">Sub Total:</p>
+                            <p class="subtotal-price">${{ subtotal }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- ----------------------------------------------------------------- -->
+            </div>
         </div>
     </div>
 </template>
+
+<script>
+    import "@fortawesome/fontawesome-free/css/all.css";
+    import axios from "axios";
+
+    export default {
+        data() {
+            return {
+                countries: [],
+                cart: [],
+            };
+        },
+
+        mounted() {
+            axios
+                .get("http://127.0.0.1:8000/api/countries")
+                .then((response) => {
+                    console.log("API Response:", response.data);
+                    this.countries = response.data.data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching data from API:", error);
+                });
+        },
+
+        computed: {
+            subtotal() {
+                return this.cart.reduce(
+                    (total, item) => total + item.quantity * item.price,
+                    0
+                );
+            },
+        },
+
+        created() {
+            // Retrieve the cart data from local storage
+            const storedCart = localStorage.getItem("cart");
+            if (storedCart) {
+                this.cart = JSON.parse(storedCart);
+            }
+        },
+    };
+</script>
 
 <style scoped>
     .checkout-page {
@@ -116,7 +179,7 @@
         max-width: 1200px;
     }
 
-    .hr{
+    .hr {
         color: #ced4da;
     }
 
@@ -134,7 +197,6 @@
     .second-column {
         flex: 1;
         padding: 20px;
-        background-color: yellow;
     }
 
     .logo-img {
@@ -212,7 +274,7 @@
         border-radius: 5px;
         border: 1px solid #ced4da;
         box-sizing: border-box;
-        width: 100%
+        width: 100%;
     }
 
     .input-container {
@@ -228,7 +290,6 @@
         border-radius: 5px;
         border: 1px solid #ced4da;
         margin-right: 5px;
-
     }
 
     .input-phone {
@@ -269,18 +330,33 @@
 
     .shipping-method-li label {
         font-size: 14px;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+        font-family:
+            -apple-system,
+            BlinkMacSystemFont,
+            Segoe UI,
+            Roboto,
+            Helvetica Neue,
+            Arial,
+            Noto Sans,
+            Liberation Sans,
+            sans-serif,
+            Apple Color Emoji,
+            Segoe UI Emoji,
+            Segoe UI Symbol,
+            Noto Color Emoji;
     }
 
     .shipping-method-li:last-child {
         border-top: 1px solid #ced4da;
     }
 
-    .note{
-
+    .note {
+        font-size: 16px;
+        font-weight: 400;
+        margin: 0;
     }
 
-    .note-message{
+    .note-message {
         height: calc(4.25rem + 9px);
         padding-left: 15px;
         font-size: 14px;
@@ -288,7 +364,93 @@
         border: 1px solid #ced4da;
         box-sizing: border-box;
         width: 100%;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+        font-family:
+            -apple-system,
+            BlinkMacSystemFont,
+            Segoe UI,
+            Roboto,
+            Helvetica Neue,
+            Arial,
+            Noto Sans,
+            Liberation Sans,
+            sans-serif,
+            Apple Color Emoji,
+            Segoe UI Emoji,
+            Segoe UI Symbol,
+            Noto Color Emoji;
+    }
 
+    .final-checkout {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .back-to-cart {
+        text-decoration: none;
+        color: #17a2b8;
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-finalcheckout {
+        background-color: #17a2b8;
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .product {
+        display: flex;
+        align-items: start;
+        margin-bottom: 1rem;
+        margin-top: 0;
+    }
+
+    .checkout-image {
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        padding: 0.25rem;
+        width: 70px;
+        height: 70px;
+    }
+
+    .checkout-item {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ced4da;
+    }
+
+    .checkout-name {
+        font-size: 14px;
+    }
+
+    .checkout-size-color {
+        font-size: 11px;
+    }
+
+    .div-subtotal {
+        height: 20vh;
+        padding: 20px;
+        bottom: 0;
+    }
+
+    .subtotal {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .subtotal-title {
+        font-size: 18px;
+    }
+
+    .subtotal-price {
+        font-size: 18px;
     }
 </style>

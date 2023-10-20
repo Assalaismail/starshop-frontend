@@ -18,18 +18,25 @@
                     <div class="name-size-color-qty">
                         <p class="cart-name">{{ item . name }}</p>
                         <p class="cart-size-color">
-                            (<span>Size:</span> {{ item . size }}, <span>Color:</span> {{ item . color }})
+                            (<span>Size:</span> {{ item . size }}, <span>Color:</span>
+                            {{ item . color }})
                         </p>
                         <p class="cart-price">{{ item . quantity }} x ${{ item . price }}</p>
                     </div>
 
                     <div class="quantity-control">
-                        <button @click="decrementQuantity(index)" class="minus-btn">-</button>
+                        <button @click="decrementQuantity(index)" class="minus-btn">
+                            -
+                        </button>
                         <input type="text" :value="item.quantity" @input="updateQuantity(index, $event)"
                             class="item-qty" />
-                        <button @click="incrementQuantity(index)" class="plus-btn">+</button>
+                        <button @click="incrementQuantity(index)" class="plus-btn">
+                            +
+                        </button>
                     </div>
-                    <button class="btn-remove-cart" @click="removeFromCart(index)">x</button>
+                    <button class="btn-remove-cart" @click="removeFromCart(index)">
+                        x
+                    </button>
                 </div>
 
                 <div class="div-subtotal">
@@ -39,26 +46,30 @@
                     </div>
 
                     <div class="cart-buttons">
-                        <button class="checkout" @click="closeCart">Checkout <i class="fa-solid fa-arrow-right"></i></button>
+                        <router-link to="/checkout">
+                            <button class="checkout" @click="closeCart">
+                                Checkout <i class="fa-solid fa--right"></i>
+                            </button>
+                        </router-link>
 
                         <router-link to="/cart">
-                            <button class="view-cart" @click="closeCart">View Cart <i class="fa-solid fa-arrow-right"></i></button>
+                            <button class="view-cart" @click="closeCart">
+                                View Cart <i class="fa-solid fa--right"></i>
+                            </button>
                         </router-link>
                     </div>
-
                 </div>
-              </div>
-              <toast />
+            </div>
+            <toast />
         </div>
     </transition>
 </template>
-
 
 <script>
     import "@fortawesome/fontawesome-free/css/all.css";
     import {
         toast
-    } from 'vue3-toastify';
+    } from "vue3-toastify";
 
     export default {
         props: {
@@ -73,40 +84,41 @@
 
         computed: {
             subtotal() {
-                return this.cart.reduce((total, item) => total + item.quantity * item.price, 0);
+                return this.cart.reduce(
+                    (total, item) => total + item.quantity * item.price,
+                    0
+                );
             },
         },
 
-
         created() {
             // Retrieve the cart data from local storage
-            const storedCart = localStorage.getItem('cart');
+            const storedCart = localStorage.getItem("cart");
             if (storedCart) {
                 this.cart = JSON.parse(storedCart);
             }
         },
 
         methods: {
-
-          closeCart() {
-      this.$emit('close-cart'); // Emit an event to notify the parent component
-    },
+            closeCart() {
+                this.$emit("close-cart"); // Emit an event to notify the parent component
+            },
             removeFromCart(index) {
                 this.cart.splice(index, 1); // Remove the item from the cart array
-                localStorage.setItem('cart', JSON.stringify(this.cart)); // Update local storage
-                toast.success('Item removed from cart'); // Show a success toast
+                localStorage.setItem("cart", JSON.stringify(this.cart)); // Update local storage
+                toast.success("Item removed from cart"); // Show a success toast
             },
-
 
             incrementQuantity(index) {
                 const item = this.cart[index];
                 if (item.quantity < item.maxQuantity) {
                     item.quantity++;
                 } else {
-                    toast.error('One or all products are not enough quantity so cannot update!');
+                    toast.error(
+                        "One or all products are not enough quantity so cannot update!"
+                    );
                 }
             },
-
 
             decrementQuantity(index) {
                 // Decrease the quantity of the item in the cart, but not below 1
@@ -119,15 +131,17 @@
                 // Update the quantity of the item in the cart when the input field changes, considering the maximum available quantity
                 const newQuantity = parseInt(event.target.value);
                 const item = this.cart[index];
-                if (!isNaN(newQuantity) && newQuantity >= 1 && newQuantity <= item.maxQuantity) {
+                if (
+                    !isNaN(newQuantity) &&
+                    newQuantity >= 1 &&
+                    newQuantity <= item.maxQuantity
+                ) {
                     item.quantity = newQuantity;
                 }
             },
-
         },
     };
 </script>
-
 
 <style scoped>
     .slide-in-enter-active,
@@ -229,7 +243,7 @@
     }
 
     .btn-remove-cart:hover {
-        color: #7f9096
+        color: #7f9096;
     }
 
     .div-subtotal {
@@ -238,7 +252,6 @@
         padding: 20px;
         bottom: 0;
         position: absolute;
-
     }
 
     .subtotal {
@@ -262,6 +275,7 @@
     }
 
     .checkout {
+        width: 100%;
         background-color: #7f9096;
         height: 40px;
         border: none;
@@ -280,11 +294,9 @@
         cursor: pointer;
     }
 
-
     .view-cart:hover {
         background-color: #7f9096;
         color: white;
         cursor: pointer;
-
     }
 </style>
