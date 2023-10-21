@@ -103,15 +103,14 @@
 
             <div class="second-column">
                 <p class="product">Product(s):</p>
-                <!-- ---------------------------------------------- -->
+                <!-- ----------------------------------------------------------------- -->
                 <div class="panel-content">
                     <div v-for="(item, index) in cart" :key="index" class="checkout-item">
                         <img :src="item.image" alt="Checkout Item Image" class="checkout-image" />
                         <div class="name-size-color-qty">
                             <p class="checkout-name">{{ item . name }}</p>
                             <p class="checkout-size-color">
-                                (<span>Size:</span> {{ item . size }}, <span>Color:</span>
-                                {{ item . color }})
+                                (<span>Size:</span> {{ item . size }}, <span>Color:</span>{{ item . color }})
                             </p>
                         </div>
                         <p class="checkout-price">${{ item . price }}</p>
@@ -122,7 +121,22 @@
                             <p class="subtotal-title">Sub Total:</p>
                             <p class="subtotal-price">${{ subtotal }}</p>
                         </div>
+
+
                     </div>
+
+                    <div>
+                        <button class="coupon-code" @click="toggleCouponField">You have a coupon code?</button>
+                        <div id="coupon-field" :class="{ hidden: !couponFieldVisible }">
+                            <div class="cc-div">
+                            <input type="text" id="coupon-input" placeholder="Enter coupon code"
+                                class="input-coupon-code">
+                            <button id="apply-button" class="button-coupon-code"><i class="fa-solid fa-gift"></i>
+                                Apply</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- ----------------------------------------------------------------- -->
             </div>
@@ -139,6 +153,7 @@
             return {
                 countries: [],
                 cart: [],
+                couponFieldVisible: false,
             };
         },
 
@@ -169,6 +184,13 @@
             if (storedCart) {
                 this.cart = JSON.parse(storedCart);
             }
+        },
+
+
+        methods: {
+            toggleCouponField() {
+                this.couponFieldVisible = !this.couponFieldVisible;
+            },
         },
     };
 </script>
@@ -435,7 +457,6 @@
     }
 
     .div-subtotal {
-        height: 20vh;
         padding: 20px;
         bottom: 0;
     }
@@ -452,5 +473,48 @@
 
     .subtotal-price {
         font-size: 18px;
+    }
+
+    .coupon-code {
+        display: flex;
+        background-color: white;
+        border: none;
+        color: #17a2b8;
+        cursor: pointer;
+    }
+
+    .coupon-code:hover {
+        text-decoration: underline;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .cc-div{
+        display: flex;
+        margin-top: 10px;
+        margin-left: 20px;
+    }
+
+    .input-coupon-code {
+        border: 1px solid #dcdcdc;
+        height: 45px;
+        width: 250px;
+        padding-left: 7px;
+        border-radius: 5px;
+        margin-right: 50px;
+    }
+
+    .button-coupon-code {
+        border-radius: 5px;
+        height: 45px;
+        background-color: #17a2b8;
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
     }
 </style>
