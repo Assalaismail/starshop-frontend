@@ -20,8 +20,11 @@
 
                 <div v-if="selectedColor && selectedSize">
                     <p v-for="product in productsByColorAndSize(selectedColor, selectedSize)" :key="product.id"
-                        :class="{ 'text-green': product.stock_status === 'In Stock', 'text-red': product
-                                .stock_status === 'Out of Stock' }">
+                        :class="{
+                            'text-green': product.stock_status === 'In Stock',
+                            'text-red': product
+                                .stock_status === 'Out of Stock'
+                        }">
                         ({{ product . stock_status }})
                     </p>
                 </div>
@@ -118,6 +121,13 @@
         },
 
         watch: {
+            // Watch for changes in selectedColor and products, and update selectedImage
+            selectedColor: {
+                handler(newColor) {
+                    this.updateSelectedImage(newColor);
+                },
+                immediate: true,
+            },
             // Watch for changes in products and set the default selected image
             products: {
                 handler(newProducts) {
@@ -134,6 +144,16 @@
         },
 
         computed: {
+            // Add a computed property to get all images for the selected color
+            selectedColorImages() {
+                if (this.selectedColor) {
+                    return this.products
+                        .filter((product) => product.color === this.selectedColor)
+                        .map((product) => JSON.parse(product.images));
+                }
+                return [];
+            },
+
             uniqueColors() {
                 const colorSet = new Set();
                 this.products.forEach((product) => {
@@ -275,6 +295,19 @@
                     }
                 } else {
                     toast.error('This is an error!');
+                }
+            },
+
+
+            // Add a method to update the selected image based on the selected color
+            updateSelectedImage(selectedColor) {
+                if (selectedColor && this.products.length > 0) {
+                    const images = this.selectedColorImages;
+                    if (images.length > 0) {
+                        this.selectedImage = images[0][0]; // Display the first image for the selected color
+                    }
+                } else {
+                    this.selectedImage = null;
                 }
             },
 

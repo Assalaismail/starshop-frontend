@@ -13,7 +13,7 @@
                         <p class="add-title">Select available addresses:</p>
 
                         <select class="add-new-address">
-                            <option value="" disabled selected>Add new address:</option>
+                            <option value="" selected>Add new address:</option>
                         </select>
 
                         <input type="text" id="name" placeholder="Full Name" class="input-full-name" />
@@ -23,17 +23,21 @@
                             <input type="text" id="phone" placeholder="Phone" class="input-phone" />
                         </div>
 
-                        <select class="add-new-address">
+                        <select v-model="selectedCountry" @change="fetchStates" class="add-new-address">
                             <option value="" disabled>Choose your country</option>
-                            <option v-for="country in countries" :key="country.id" :value="country.name">
+                            <option v-for="country in countries" :key="country.id" :value="country.id">
                                 {{ country . name }}
                             </option>
                         </select>
 
                         <div class="input-container">
-                            <select class="input-email">
+                            <select v-model="selectedState" class="input-email">
                                 <option value="" disabled selected>Choose your state</option>
+                                <option v-for="state in states" :key="state.id" :value="state.id">
+                                    {{ state . name }}
+                                </option>
                             </select>
+
                             <input type="text" id="city" placeholder="City" class="input-phone" />
                         </div>
 
@@ -47,15 +51,15 @@
                             <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul">
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="shipping_method" id="shipping-method-0" value="default"
+                                    <input type="radio" name="shipping_method1" id="shipping-method-1" value="default"
                                         data-option="0" />
-                                    <label for="shipping-method-0"> Inside Beirut - $3.00 </label>
+                                    <label for="shipping-method-1"> Inside Beirut - $3.00 </label>
                                 </li>
 
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="shipping_method" id="shipping-method-1" value="default"
+                                    <input type="radio" name="shipping_method2" id="shipping-method-2" value="default"
                                         data-option="1" />
-                                    <label for="shipping-method-1">
+                                    <label for="shipping-method-2">
                                         Same day delivery (Beirut) - $6.00
                                     </label>
                                 </li>
@@ -70,15 +74,15 @@
                             <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul">
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="shipping_method" id="shipping-method-0" value="default"
+                                    <input type="radio" name="pay_method1" id="pay-method-1" value="default"
                                         data-option="0" />
-                                    <label for="shipping-method-0"> Pay online via Stripe </label>
+                                    <label for="pay-method-1"> Pay online via Stripe </label>
                                 </li>
 
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="shipping_method" id="shipping-method-1" value="default"
+                                    <input type="radio" name="pay_method2" id="pay-method-2" value="default"
                                         data-option="1" />
-                                    <label for="shipping-method-1">
+                                    <label for="pay-method-2">
                                         Cash on delivery (COD)
                                     </label>
                                 </li>
@@ -88,14 +92,12 @@
 
                     <div class="shipping-address-div">
                         <p class="note">Note</p>
-
                         <textarea type="text" id="note" name="note" class="note-message"
                             placeholder="Note..." />
                     </div>
 
                     <div class="final-checkout">
                         <a href="/cart" class="back-to-cart"><i class="fa-solid fa-arrow-left"></i> Back to cart</a>
-
                         <button class="btn-finalcheckout">Checkout</button>
                     </div>
                 </form>
@@ -121,18 +123,16 @@
                             <p class="subtotal-title">Sub Total:</p>
                             <p class="subtotal-price">${{ subtotal }}</p>
                         </div>
-
-
                     </div>
 
                     <div>
                         <button class="coupon-code" @click="toggleCouponField">You have a coupon code?</button>
                         <div id="coupon-field" :class="{ hidden: !couponFieldVisible }">
                             <div class="cc-div">
-                            <input type="text" id="coupon-input" placeholder="Enter coupon code"
-                                class="input-coupon-code">
-                            <button id="apply-button" class="button-coupon-code"><i class="fa-solid fa-gift"></i>
-                                Apply</button>
+                                <input type="text" id="coupon-input" placeholder="Enter coupon code"
+                                    class="input-coupon-code">
+                                <button id="apply-button" class="button-coupon-code"><i class="fa-solid fa-gift"></i>
+                                    Apply</button>
                             </div>
                         </div>
                     </div>
@@ -152,6 +152,9 @@
         data() {
             return {
                 countries: [],
+                selectedCountry: "",
+                states: [],
+                selectedState: "",
                 cart: [],
                 couponFieldVisible: false,
             };
@@ -172,9 +175,7 @@
         computed: {
             subtotal() {
                 return this.cart.reduce(
-                    (total, item) => total + item.quantity * item.price,
-                    0
-                );
+                    (total, item) => total + item.quantity * item.price, 0);
             },
         },
 
@@ -186,8 +187,23 @@
             }
         },
 
-
         methods: {
+            fetchStates() {
+                if (this.selectedCountry) {
+                    axios
+                        .get(`http://127.0.0.1:8000/api/states/${this.selectedCountry}`)
+                        .then((response) => {
+                            this.states = response.data.data;
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching states from API:", error);
+                        });
+                } else {
+                    // If no country is selected, clear the states
+                    this.states = [];
+                }
+            },
+
             toggleCouponField() {
                 this.couponFieldVisible = !this.couponFieldVisible;
             },
@@ -316,7 +332,7 @@
 
     .input-phone {
         flex: 1;
-        height: calc(2.25rem + 9px);
+        /* height: calc(2.25rem + 9px); */
         padding-left: 15px;
         font-size: 14px;
         border-radius: 5px;
@@ -450,6 +466,20 @@
 
     .checkout-name {
         font-size: 14px;
+        font-family:
+            -apple-system,
+            BlinkMacSystemFont,
+            Segoe UI,
+            Roboto,
+            Helvetica Neue,
+            Arial,
+            Noto Sans,
+            Liberation Sans,
+            sans-serif,
+            Apple Color Emoji,
+            Segoe UI Emoji,
+            Segoe UI Symbol,
+            Noto Color Emoji;
     }
 
     .checkout-size-color {
@@ -491,7 +521,7 @@
         display: none;
     }
 
-    .cc-div{
+    .cc-div {
         display: flex;
         margin-top: 10px;
         margin-left: 20px;
