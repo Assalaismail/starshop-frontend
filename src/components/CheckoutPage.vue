@@ -12,36 +12,38 @@
                         <p class="Shipping-information">Shipping information</p>
                         <p class="add-title">Select available addresses:</p>
 
-                        <select class="add-new-address">
+                        <select class="add-new-address" @click="toggleInputsAddress">
                             <option value="" selected>Add new address:</option>
                         </select>
 
-                        <input type="text" id="name" placeholder="Full Name" class="input-full-name" />
+                        <div class="div-inputsAddress" :class="{ hidden: !inputsAddressVisible }">
 
-                        <div class="input-container">
-                            <input type="text" id="email" placeholder="Email" class="input-email" />
-                            <input type="text" id="phone" placeholder="Phone" class="input-phone" />
-                        </div>
+                            <input type="text" id="name" placeholder="Full Name" class="input-full-name" />
 
-                        <select v-model="selectedCountry" @change="fetchStates" class="add-new-address">
-                            <option value="" disabled>Choose your country</option>
-                            <option v-for="country in countries" :key="country.id" :value="country.id">
-                                {{ country . name }}
-                            </option>
-                        </select>
+                            <div class="input-container">
+                                <input type="text" id="email" placeholder="Email" class="input-email" />
+                                <input type="text" id="phone" placeholder="Phone" class="input-phone" />
+                            </div>
 
-                        <div class="input-container">
-                            <select v-model="selectedState" class="input-email">
-                                <option value="" disabled selected>Choose your state</option>
-                                <option v-for="state in states" :key="state.id" :value="state.id">
-                                    {{ state . name }}
+                            <select v-model="selectedCountry" @change="fetchStates" class="add-new-address">
+                                <option value="" disabled>Choose your country</option>
+                                <option v-for="country in countries" :key="country.id" :value="country.id">
+                                    {{ country . name }}
                                 </option>
                             </select>
 
-                            <input type="text" id="city" placeholder="City" class="input-phone" />
-                        </div>
+                            <div class="input-container">
+                                <select v-model="selectedState" class="input-email">
+                                    <option value="" disabled selected>Choose your state</option>
+                                    <option v-for="state in states" :key="state.id" :value="state.id">
+                                        {{ state . name }}
+                                    </option>
+                                </select>
+                                <input type="text" id="city" placeholder="City" class="input-phone" />
+                            </div>
 
-                        <input type="text" id="address" placeholder="Address" class="input-full-name" />
+                            <input type="text" id="address" placeholder="Address" class="input-full-name" />
+                        </div>
                     </div>
 
                     <div class="shipping-address-div">
@@ -51,20 +53,20 @@
                             <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul">
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="shipping_method1" id="shipping-method-1" value="default"
-                                        data-option="0" />
-                                    <label for="shipping-method-1"> Inside Beirut - $3.00 </label>
+                                    <input type="radio" name="shipping_method" id="shipping-method-1" value="default"
+                                        v-model="selectedShippingMethod" @change="updateSubtotal" />
+                                    <label for="shipping-method-1">Inside Beirut - $3.00</label>
                                 </li>
 
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="shipping_method2" id="shipping-method-2" value="default"
-                                        data-option="1" />
-                                    <label for="shipping-method-2">
-                                        Same day delivery (Beirut) - $6.00
-                                    </label>
+                                    <input type="radio" name="shipping_method" id="shipping-method-2" value="express"
+                                        v-model="selectedShippingMethod" @change="updateSubtotal" />
+                                    <label for="shipping-method-2">Same day delivery (Beirut) - $6.00</label>
                                 </li>
+
                             </ul>
                         </div>
+
                     </div>
 
                     <div class="shipping-address-div">
@@ -74,17 +76,15 @@
                             <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul">
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="pay_method1" id="pay-method-1" value="default"
+                                    <input type="radio" name="pay_method" id="pay-method-1" value="default"
                                         data-option="0" />
                                     <label for="pay-method-1"> Pay online via Stripe </label>
                                 </li>
 
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="pay_method2" id="pay-method-2" value="default"
+                                    <input type="radio" name="pay_method" id="pay-method-2" value="default"
                                         data-option="1" />
-                                    <label for="pay-method-2">
-                                        Cash on delivery (COD)
-                                    </label>
+                                    <label for="pay-method-2"> Cash on delivery (COD) </label>
                                 </li>
                             </ul>
                         </div>
@@ -104,6 +104,7 @@
             </div>
 
             <div class="second-column">
+               
                 <p class="product">Product(s):</p>
                 <!-- ----------------------------------------------------------------- -->
                 <div class="panel-content">
@@ -120,23 +121,37 @@
 
                     <div class="div-subtotal">
                         <div class="subtotal">
-                            <p class="subtotal-title">Sub Total:</p>
-                            <p class="subtotal-price">${{ subtotal }}</p>
+                            
+                            <div class="subtotal1">
+                                <p class="subtotal-title">Sub Total:</p>
+                                <p class="subtotal-price">${{ subtotal }}</p>
+                            </div>
+
+                            <div class="subtotal1">
+                                <p class="subtotal-title">Shipping fee:</p>
+                                <p class="subtotal-price">${{ shippingfee }}</p>
+                            </div>
+
+                            <div class="subtotal1">
+                                <p class="subtotal-title">Total:</p>
+                                <h3 class="total-price">${{ total }}</h3>
+                            </div>
+
                         </div>
                     </div>
 
                     <div>
                         <button class="coupon-code" @click="toggleCouponField">You have a coupon code?</button>
-                        <div id="coupon-field" :class="{ hidden: !couponFieldVisible }">
+                        <div :class="{ hidden: !couponFieldVisible }">
                             <div class="cc-div">
                                 <input type="text" id="coupon-input" placeholder="Enter coupon code"
                                     class="input-coupon-code">
                                 <button id="apply-button" class="button-coupon-code"><i class="fa-solid fa-gift"></i>
-                                    Apply</button>
+                                    Apply
+                                </button>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- ----------------------------------------------------------------- -->
             </div>
@@ -157,6 +172,9 @@
                 selectedState: "",
                 cart: [],
                 couponFieldVisible: false,
+                inputsAddressVisible: false,
+
+                selectedShippingMethod: 'default',
             };
         },
 
@@ -173,9 +191,31 @@
         },
 
         computed: {
+
             subtotal() {
-                return this.cart.reduce(
-                    (total, item) => total + item.quantity * item.price, 0);
+                return this.cart.reduce((total, item) => total + item.quantity * item.price, 0);
+            },
+
+            shippingfee() {
+                let shippingCost = 0;
+                if (this.selectedShippingMethod === 'default') {
+                    shippingCost = 3.00;
+                } else if (this.selectedShippingMethod === 'express') {
+                    shippingCost = 6.00;
+                }
+                return this.cart.reduce((total) => total, 0) + shippingCost;
+            },
+
+            total() {
+                let shippingCost = 0;
+                if (this.selectedShippingMethod === 'default') {
+                    shippingCost = 3.00;
+                } else if (this.selectedShippingMethod === 'express') {
+                    shippingCost = 6.00;
+                }
+
+                return this.cart.reduce((total, item) => total + item.quantity * item.price, 0) + shippingCost;
+
             },
         },
 
@@ -207,6 +247,16 @@
             toggleCouponField() {
                 this.couponFieldVisible = !this.couponFieldVisible;
             },
+
+            toggleInputsAddress() {
+                this.inputsAddressVisible = !this.inputsAddressVisible;
+
+            },
+
+            updateSubtotal() {
+                // Recalculate the subtotal when the shipping method changes
+                this.$forceUpdate(); // Force a re-render
+            },
         },
     };
 </script>
@@ -227,13 +277,16 @@
 
     .first-column {
         border-right: 1px solid #ced4da;
-        flex: 1;
+        /* flex: 1; */
+        width: 55%;
         padding: 20px;
+        padding-right: 60px;
         background-color: rgb(255, 255, 255);
     }
 
     .second-column {
-        flex: 1;
+        /* flex: 1; */
+        width: 45%;
         padding: 20px;
     }
 
@@ -394,6 +447,13 @@
         margin: 0;
     }
 
+    .div-inputsAddress {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
     .note-message {
         height: calc(4.25rem + 9px);
         padding-left: 15px;
@@ -493,18 +553,31 @@
 
     .subtotal {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
     }
 
+    .subtotal1 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
     .subtotal-title {
-        font-size: 18px;
+        margin-block-start: 0;
+        margin-block-end: 0;
     }
 
     .subtotal-price {
-        font-size: 18px;
+        margin-block-start: 0;
+        margin-bottom: 0;
     }
 
+    .total-price{
+        margin-block-start: 0;
+        margin-bottom: 0;
+    }
     .coupon-code {
         display: flex;
         background-color: white;
@@ -547,4 +620,5 @@
         font-size: 14px;
         cursor: pointer;
     }
+
 </style>

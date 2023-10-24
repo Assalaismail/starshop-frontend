@@ -1,5 +1,6 @@
 <template>
     <div class="single-page">
+
         <div class="image-carousel">
             <div class="thumbnail-container">
                 <div v-for="(product, productIndex) in products" :key="product.id" @click="showImage(productIndex)">
@@ -12,7 +13,6 @@
         </div>
 
         <div class="column-2">
-
             <div class="name-status">
                 <p class="firstName">
                     {{ products . length > 0 ? products[0] . name : 'No products available' }}
@@ -28,16 +28,15 @@
                         ({{ product . stock_status }})
                     </p>
                 </div>
-
                 <div v-else>
                     <p class="default-instock">(In Stock)</p>
                 </div>
-
             </div>
 
             <div class="add-to-wishlist">
                 <a href="#" class="wish-heart" @click="addToWishlist"><i class="fas fa-heart"></i>Add to
-                    wishlist</a>
+                    wishlist
+                </a>
             </div>
 
             <div class="sku-price">
@@ -82,7 +81,6 @@
             </div>
 
         </div>
-
     </div>
 </template>
 
@@ -109,7 +107,6 @@
                 quantity: 1, // Default quantity
                 wishlist: [], // Array to store wishlist items
                 cart: [], // Array to store wishlist items
-
                 outOfStockMessage: '',
             };
         },
@@ -161,7 +158,6 @@
                 });
                 return Array.from(colorSet);
             },
-
 
             selectedSKU() {
                 if (this.selectedColor && this.selectedSize) {
@@ -257,7 +253,6 @@
                 }
             },
 
-
             addToCart() {
                 if (this.products.length > 0) {
                     const selectedProduct = this.products.find(
@@ -298,7 +293,6 @@
                 }
             },
 
-
             // Add a method to update the selected image based on the selected color
             updateSelectedImage(selectedColor) {
                 if (selectedColor && this.products.length > 0) {
@@ -310,8 +304,6 @@
                     this.selectedImage = null;
                 }
             },
-
-
         },
     };
 </script>
