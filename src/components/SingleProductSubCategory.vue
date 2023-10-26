@@ -6,6 +6,13 @@
                 <div v-for="(product, productIndex) in products" :key="product.id" @click="showImage(productIndex)">
                     <img :src="JSON.parse(product.images)[0]" alt="Product Image" class="small-image" />
                 </div>
+                
+                <!-- <div v-for="(product, productIndex) in products" :key="product.id" @click="showImage(productIndex)">
+                    <div v-for="(image, imageIndex) in JSON.parse(product.images)" :key="imageIndex" >
+                        <img :src="image" :alt="`Product Image ${imageIndex + 1}`" class="small-image" />
+                    </div>
+                </div> -->
+
             </div>
             <div class="big-image-container">
                 <img :src="selectedImage" alt="Product Image" class="big-image" />
@@ -28,9 +35,11 @@
                         ({{ product . stock_status }})
                     </p>
                 </div>
+
                 <div v-else>
                     <p class="default-instock">(In Stock)</p>
                 </div>
+                
             </div>
 
             <div class="add-to-wishlist">

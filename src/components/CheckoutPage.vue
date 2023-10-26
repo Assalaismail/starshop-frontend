@@ -12,11 +12,13 @@
                         <p class="Shipping-information">Shipping information</p>
                         <p class="add-title">Select available addresses:</p>
 
-                        <select class="add-new-address" @click="toggleInputsAddress">
-                            <option value="" selected>Add new address:</option>
+
+                        <select class="add-new-address" @change="toggleInputsAddress">
+                            <option value="" selected>Select an address:</option>
+                            <option value="new">Add new address:</option>
                         </select>
 
-                        <div class="div-inputsAddress" :class="{ hidden: !inputsAddressVisible }">
+                        <div class="div-inputsAddress" id="new-address-form" v-show="inputsAddressVisible">
 
                             <input type="text" id="name" placeholder="Full Name" class="input-full-name" />
 
@@ -97,14 +99,15 @@
                     </div>
 
                     <div class="final-checkout">
-                        <a href="/cart" class="back-to-cart"><i class="fa-solid fa-arrow-left"></i> Back to cart</a>
+                        <a href="/cart" class="back-to-cart"><i class="fa-solid fa-arrow-left"></i> Back to
+                            cart</a>
                         <button class="btn-finalcheckout">Checkout</button>
                     </div>
                 </form>
             </div>
 
             <div class="second-column">
-               
+
                 <p class="product">Product(s):</p>
                 <!-- ----------------------------------------------------------------- -->
                 <div class="panel-content">
@@ -121,7 +124,7 @@
 
                     <div class="div-subtotal">
                         <div class="subtotal">
-                            
+
                             <div class="subtotal1">
                                 <p class="subtotal-title">Sub Total:</p>
                                 <p class="subtotal-price">${{ subtotal }}</p>
@@ -213,9 +216,7 @@
                 } else if (this.selectedShippingMethod === 'express') {
                     shippingCost = 6.00;
                 }
-
                 return this.cart.reduce((total, item) => total + item.quantity * item.price, 0) + shippingCost;
-
             },
         },
 
@@ -249,8 +250,7 @@
             },
 
             toggleInputsAddress() {
-                this.inputsAddressVisible = !this.inputsAddressVisible;
-
+                this.inputsAddressVisible = event.target.value === "new";
             },
 
             updateSubtotal() {
@@ -574,10 +574,11 @@
         margin-bottom: 0;
     }
 
-    .total-price{
+    .total-price {
         margin-block-start: 0;
         margin-bottom: 0;
     }
+
     .coupon-code {
         display: flex;
         background-color: white;
@@ -620,5 +621,4 @@
         font-size: 14px;
         cursor: pointer;
     }
-
 </style>
