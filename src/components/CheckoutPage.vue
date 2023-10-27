@@ -37,7 +37,7 @@
                             <div class="input-container">
                                 <select v-model="selectedState" class="input-email">
                                     <option value="" disabled selected>Choose your state</option>
-                                    <option v-for="state in states" :key="state.id" :value="state.id">
+                                    <option v-for="state in states" :key="state.id" :value="state.name">
                                         {{ state . name }}
                                     </option>
                                 </select>
@@ -50,42 +50,42 @@
 
                     <div class="shipping-address-div">
                         <p class="Shipping-method">Shipping method</p>
-
                         <div class="payment-checkout-form">
                             <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul">
-                                <li class="shipping-method-li">
+                                <li class="shipping-method-li" v-if="selectedState === 'Beirut Governorate'">
                                     <input type="radio" name="shipping_method" id="shipping-method-1" value="default"
-                                        v-model="selectedShippingMethod" @change="updateSubtotal" />
+                                        v-model="selectedShippingMethod" @change="updateSubtotal" :checked="true"/>
                                     <label for="shipping-method-1">Inside Beirut - $3.00</label>
                                 </li>
 
-                                <li class="shipping-method-li">
+                                <li class="shipping-method-li" v-if="selectedState === 'Beirut Governorate'">
                                     <input type="radio" name="shipping_method" id="shipping-method-2" value="express"
                                         v-model="selectedShippingMethod" @change="updateSubtotal" />
                                     <label for="shipping-method-2">Same day delivery (Beirut) - $6.00</label>
                                 </li>
 
+                                <li class="shipping-method-li-outside" v-else>
+                                    <input type="radio" name="shipping_method" id="shipping-method-3" value="outside"
+                                        v-model="selectedShippingMethod" @change="updateSubtotal" :checked="true"/>
+                                    <label for="shipping-method-3">Outside Beirut - $3.00</label>
+                                </li>
                             </ul>
                         </div>
-
                     </div>
 
                     <div class="shipping-address-div">
                         <p class="Shipping-method">Payment method</p>
-
                         <div class="payment-checkout-form">
                             <input type="hidden" name="shipping_option" value="1" />
-                            <ul class="shipping-method-ul">
+                            <ul class="shipping-method-ul" aria-required="true">
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="pay_method" id="pay-method-1" value="default"
-                                        data-option="0" />
+                                    <input type="radio" name="pay_method" id="pay-method-1" value="default" data-option="0" />
                                     <label for="pay-method-1"> Pay online via Stripe </label>
                                 </li>
 
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="pay_method" id="pay-method-2" value="default"
-                                        data-option="1" />
+                                    <input type="radio" name="pay_method" id="pay-method-2" value="default" data-option="1" />
                                     <label for="pay-method-2"> Cash on delivery (COD) </label>
                                 </li>
                             </ul>
@@ -107,7 +107,6 @@
             </div>
 
             <div class="second-column">
-
                 <p class="product">Product(s):</p>
                 <!-- ----------------------------------------------------------------- -->
                 <div class="panel-content">
@@ -124,7 +123,6 @@
 
                     <div class="div-subtotal">
                         <div class="subtotal">
-
                             <div class="subtotal1">
                                 <p class="subtotal-title">Sub Total:</p>
                                 <p class="subtotal-price">${{ subtotal }}</p>
@@ -139,7 +137,6 @@
                                 <p class="subtotal-title">Total:</p>
                                 <h3 class="total-price">${{ total }}</h3>
                             </div>
-
                         </div>
                     </div>
 
@@ -176,8 +173,9 @@
                 cart: [],
                 couponFieldVisible: false,
                 inputsAddressVisible: false,
+                insideOrOutsideVisible: false,
 
-                selectedShippingMethod: 'default',
+                selectedShippingMethod: 'outside',
             };
         },
 
@@ -201,7 +199,7 @@
 
             shippingfee() {
                 let shippingCost = 0;
-                if (this.selectedShippingMethod === 'default') {
+                if (this.selectedShippingMethod === 'default' || this.selectedShippingMethod === 'outside') {
                     shippingCost = 3.00;
                 } else if (this.selectedShippingMethod === 'express') {
                     shippingCost = 6.00;
@@ -211,7 +209,7 @@
 
             total() {
                 let shippingCost = 0;
-                if (this.selectedShippingMethod === 'default') {
+                if (this.selectedShippingMethod === 'default' || this.selectedShippingMethod === 'outside') {
                     shippingCost = 3.00;
                 } else if (this.selectedShippingMethod === 'express') {
                     shippingCost = 6.00;
@@ -405,11 +403,24 @@
         margin: 0;
     }
 
-    .shipping-method-li {
+    .shipping-method-li{
         display: flex;
         align-items: center;
         margin-bottom: 10px;
         padding-left: 15px;
+    }
+    
+    .shipping-method-li-outside {
+        display: flex;
+        align-items: center;
+        padding-left: 15px;
+    }
+
+    .shipping-method-li-outside input[type="radio"]{
+        height: calc(2.25rem + 9px);
+        margin-right: 10px;
+        width: 20px;
+        border: 1px solid #ced4da;
     }
 
     .shipping-method-li input[type="radio"] {
