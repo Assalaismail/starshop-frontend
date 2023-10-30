@@ -67,7 +67,7 @@
 
             <p class="size">Size</p>
             <select v-model="selectedSize" class="select-size">
-                <option value="" disabled>Select size</option>
+                <option value="" disabled selected>Select size</option>
                 <option v-for="size in sizesByColor(selectedColor)" :key="size">{{ size }}</option>
             </select>
 

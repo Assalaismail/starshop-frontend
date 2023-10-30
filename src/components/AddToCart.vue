@@ -113,32 +113,32 @@
                 const item = this.cart[index];
                 if (item.quantity < item.maxQuantity) {
                     item.quantity++;
+                    this.updateLocalStorage(); // Call the function to update the local storage
                 } else {
-                    toast.error(
-                        "One or all products are not enough quantity so cannot update!"
-                    );
+                    toast.error("One or all products are not enough quantity so cannot update!");
                 }
             },
 
             decrementQuantity(index) {
-                // Decrease the quantity of the item in the cart, but not below 1
                 if (this.cart[index].quantity > 1) {
                     this.cart[index].quantity--;
+                    this.updateLocalStorage(); // Call the function to update the local storage
                 }
             },
 
             updateQuantity(index, event) {
-                // Update the quantity of the item in the cart when the input field changes, considering the maximum available quantity
                 const newQuantity = parseInt(event.target.value);
                 const item = this.cart[index];
-                if (
-                    !isNaN(newQuantity) &&
-                    newQuantity >= 1 &&
-                    newQuantity <= item.maxQuantity
-                ) {
+                if (!isNaN(newQuantity) && newQuantity >= 1 && newQuantity <= item.maxQuantity) {
                     item.quantity = newQuantity;
+                    this.updateLocalStorage(); // Call the function to update the local storage
                 }
             },
+
+            updateLocalStorage() {
+                // Update the local storage with the updated cart data
+                localStorage.setItem("cart", JSON.stringify(this.cart));
+            }
         },
     };
 </script>

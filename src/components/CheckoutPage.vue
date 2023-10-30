@@ -12,14 +12,12 @@
                         <p class="Shipping-information">Shipping information</p>
                         <p class="add-title">Select available addresses:</p>
 
-
                         <select class="add-new-address" @change="toggleInputsAddress">
                             <option value="" selected>Select an address:</option>
                             <option value="new">Add new address:</option>
                         </select>
 
                         <div class="div-inputsAddress" id="new-address-form" v-show="inputsAddressVisible">
-
                             <input type="text" id="name" placeholder="Full Name" class="input-full-name" />
 
                             <div class="input-container">
@@ -43,7 +41,6 @@
                                 </select>
                                 <input type="text" id="city" placeholder="City" class="input-phone" />
                             </div>
-
                             <input type="text" id="address" placeholder="Address" class="input-full-name" />
                         </div>
                     </div>
@@ -55,7 +52,8 @@
                             <ul class="shipping-method-ul">
                                 <li class="shipping-method-li" v-if="selectedState === 'Beirut Governorate'">
                                     <input type="radio" name="shipping_method" id="shipping-method-1" value="default"
-                                        v-model="selectedShippingMethod" @change="updateSubtotal" :checked="true"/>
+                                        v-model="selectedShippingMethod" @change="updateSubtotal"
+                                        :checked="true" />
                                     <label for="shipping-method-1">Inside Beirut - $3.00</label>
                                 </li>
 
@@ -67,7 +65,8 @@
 
                                 <li class="shipping-method-li-outside" v-else>
                                     <input type="radio" name="shipping_method" id="shipping-method-3" value="outside"
-                                        v-model="selectedShippingMethod" @change="updateSubtotal" :checked="true"/>
+                                        v-model="selectedShippingMethod" @change="updateSubtotal"
+                                        :checked="true" />
                                     <label for="shipping-method-3">Outside Beirut - $3.00</label>
                                 </li>
                             </ul>
@@ -80,12 +79,14 @@
                             <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul" aria-required="true">
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="pay_method" id="pay-method-1" value="default" data-option="0" />
+                                    <input type="radio" name="pay_method" id="pay-method-1" value="default"
+                                        data-option="0" />
                                     <label for="pay-method-1"> Pay online via Stripe </label>
                                 </li>
 
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="pay_method" id="pay-method-2" value="default" data-option="1" />
+                                    <input type="radio" name="pay_method" id="pay-method-2" value="default"
+                                        data-option="1" />
                                     <label for="pay-method-2"> Cash on delivery (COD) </label>
                                 </li>
                             </ul>
@@ -141,12 +142,15 @@
                     </div>
 
                     <div>
-                        <button class="coupon-code" @click="toggleCouponField">You have a coupon code?</button>
+                        <button class="coupon-code" @click="toggleCouponField">
+                            You have a coupon code?
+                        </button>
                         <div :class="{ hidden: !couponFieldVisible }">
                             <div class="cc-div">
-                                <input type="text" id="coupon-input" placeholder="Enter coupon code"
-                                    class="input-coupon-code">
-                                <button id="apply-button" class="button-coupon-code"><i class="fa-solid fa-gift"></i>
+                                <input type="text" ref="couponInput" placeholder="Enter coupon code"
+                                    class="input-coupon-code" />
+                                <button @click="applyCoupon" id="apply-button" class="button-coupon-code">
+                                    <i class="fa-solid fa-gift"></i>
                                     Apply
                                 </button>
                             </div>
@@ -175,7 +179,9 @@
                 inputsAddressVisible: false,
                 insideOrOutsideVisible: false,
 
-                selectedShippingMethod: 'outside',
+                selectedShippingMethod: "outside",
+
+                coupon: "",
             };
         },
 
@@ -192,29 +198,42 @@
         },
 
         computed: {
-
             subtotal() {
-                return this.cart.reduce((total, item) => total + item.quantity * item.price, 0);
+                return this.cart.reduce(
+                    (total, item) => total + item.quantity * item.price,
+                    0
+                );
             },
 
             shippingfee() {
                 let shippingCost = 0;
-                if (this.selectedShippingMethod === 'default' || this.selectedShippingMethod === 'outside') {
-                    shippingCost = 3.00;
-                } else if (this.selectedShippingMethod === 'express') {
-                    shippingCost = 6.00;
+                if (
+                    this.selectedShippingMethod === "default" ||
+                    this.selectedShippingMethod === "outside"
+                ) {
+                    shippingCost = 3.0;
+                } else if (this.selectedShippingMethod === "express") {
+                    shippingCost = 6.0;
                 }
                 return this.cart.reduce((total) => total, 0) + shippingCost;
             },
 
             total() {
                 let shippingCost = 0;
-                if (this.selectedShippingMethod === 'default' || this.selectedShippingMethod === 'outside') {
-                    shippingCost = 3.00;
-                } else if (this.selectedShippingMethod === 'express') {
-                    shippingCost = 6.00;
+                if (
+                    this.selectedShippingMethod === "default" ||
+                    this.selectedShippingMethod === "outside"
+                ) {
+                    shippingCost = 3.0;
+                } else if (this.selectedShippingMethod === "express") {
+                    shippingCost = 6.0;
                 }
-                return this.cart.reduce((total, item) => total + item.quantity * item.price, 0) + shippingCost;
+                return (
+                    this.cart.reduce(
+                        (total, item) => total + item.quantity * item.price,
+                        0
+                    ) + shippingCost
+                );
             },
         },
 
@@ -254,6 +273,38 @@
             updateSubtotal() {
                 // Recalculate the subtotal when the shipping method changes
                 this.$forceUpdate(); // Force a re-render
+            },
+
+            async applyCoupon() {
+                const couponCode = this.$refs.couponInput.value; // Get the coupon code from input
+
+                try {
+                    const response = await axios.get(
+                        `http://127.0.0.1:8000/api/codes/${couponCode}`
+                    );
+
+                    if (response.status === 200) {
+                        this.coupon = couponCode;
+
+                        // Check if the API response contains the discount value
+                        if (response.data && response.data.data.value) {
+                            const discountPercentage = response.data.data.value;
+
+                            const discount = this.total * (discountPercentage / 100);
+
+                            const newTotal = this.total - discount;
+
+                            console.log("Discount applied:", discount);
+                            console.log("New total after discount:", newTotal);
+                        } else {
+                            //
+                        }
+                    } else {
+                        //
+                    }
+                } catch (error) {
+                    console.error("Error checking coupon:", error);
+                }
             },
         },
     };
@@ -403,20 +454,20 @@
         margin: 0;
     }
 
-    .shipping-method-li{
+    .shipping-method-li {
         display: flex;
         align-items: center;
         margin-bottom: 10px;
         padding-left: 15px;
     }
-    
+
     .shipping-method-li-outside {
         display: flex;
         align-items: center;
         padding-left: 15px;
     }
 
-    .shipping-method-li-outside input[type="radio"]{
+    .shipping-method-li-outside input[type="radio"] {
         height: calc(2.25rem + 9px);
         margin-right: 10px;
         width: 20px;
