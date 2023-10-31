@@ -51,20 +51,20 @@
                             <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul">
                                 <li class="shipping-method-li" v-if="selectedState === 'Beirut Governorate'">
-                                    <input type="radio" name="shipping_method" id="shipping-method-1" value="default"
+                                    <input type="radio" name="shipping_method" id="shipping-method-1" value="Inside Beirut"
                                         v-model="selectedShippingMethod" @change="updateSubtotal"
                                         :checked="true" />
                                     <label for="shipping-method-1">Inside Beirut - $3.00</label>
                                 </li>
 
                                 <li class="shipping-method-li" v-if="selectedState === 'Beirut Governorate'">
-                                    <input type="radio" name="shipping_method" id="shipping-method-2" value="express"
+                                    <input type="radio" name="shipping_method" id="shipping-method-2" value="Same day delivery"
                                         v-model="selectedShippingMethod" @change="updateSubtotal" />
                                     <label for="shipping-method-2">Same day delivery (Beirut) - $6.00</label>
                                 </li>
 
                                 <li class="shipping-method-li-outside" v-else>
-                                    <input type="radio" name="shipping_method" id="shipping-method-3" value="outside"
+                                    <input type="radio" name="shipping_method" id="shipping-method-3" value="Outside Beirut"
                                         v-model="selectedShippingMethod" @change="updateSubtotal"
                                         :checked="true" />
                                     <label for="shipping-method-3">Outside Beirut - $3.00</label>
@@ -79,13 +79,13 @@
                             <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul" aria-required="true">
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="pay_method" id="pay-method-1" value="default"
+                                    <input type="radio" name="pay_method" id="pay-method-1" value="stripe"
                                         data-option="0" />
                                     <label for="pay-method-1"> Pay online via Stripe </label>
                                 </li>
 
                                 <li class="shipping-method-li">
-                                    <input type="radio" name="pay_method" id="pay-method-2" value="default"
+                                    <input type="radio" name="pay_method" id="pay-method-2" value="cod"
                                         data-option="1" />
                                     <label for="pay-method-2"> Cash on delivery (COD) </label>
                                 </li>
@@ -112,21 +112,37 @@
                 <!-- ----------------------------------------------------------------- -->
                 <div class="panel-content">
                     <div v-for="(item, index) in cart" :key="index" class="checkout-item">
-                        <img :src="item.image" alt="Checkout Item Image" class="checkout-image" />
+                        <div style="position: relative;">
+                            <img :src="item.image" alt="Checkout Item Image" class="checkout-image" />
+                            <span class="quantity-badge">{{ item . quantity }}</span>
+                        </div>
+
                         <div class="name-size-color-qty">
                             <p class="checkout-name">{{ item . name }}</p>
                             <p class="checkout-size-color">
-                                (<span>Size:</span> {{ item . size }}, <span>Color:</span>{{ item . color }})
+                                (<span>Size:</span> {{ item . size }}, <span>Color:</span> {{ item . color }})
                             </p>
                         </div>
                         <p class="checkout-price">${{ item . price }}</p>
                     </div>
+
+
 
                     <div class="div-subtotal">
                         <div class="subtotal">
                             <div class="subtotal1">
                                 <p class="subtotal-title">Sub Total:</p>
                                 <p class="subtotal-price">${{ subtotal }}</p>
+                            </div>
+
+                            <div class="subtotal1" v-if="couponcodediv">
+                                <p class="subtotal-title">Coupon Code:</p>
+                                <p class="subtotal-price">{{ coupon }}</p>
+                            </div>
+
+                            <div class="subtotal1" v-if="couponcodediv">
+                                <p class="subtotal-title">Coupon code discount amount:</p>
+                                <p class="subtotal-price">{{ discountcoupon }}</p>
                             </div>
 
                             <div class="subtotal1">
@@ -136,12 +152,12 @@
 
                             <div class="subtotal1">
                                 <p class="subtotal-title">Total:</p>
-                                <h3 class="total-price">${{ total }}</h3>
+                                <h3 class="total-price">${{ updatedTotal }}</h3>
                             </div>
                         </div>
                     </div>
 
-                    <div>
+                    <div v-if="divcouponcode" class="cc-div1">
                         <button class="coupon-code" @click="toggleCouponField">
                             You have a coupon code?
                         </button>
@@ -152,6 +168,20 @@
                                 <button @click="applyCoupon" id="apply-button" class="button-coupon-code">
                                     <i class="fa-solid fa-gift"></i>
                                     Apply
+                                </button>
+
+                            </div>
+                            <p v-if="invalidCouponCode" class="invalid">Invalid or expired coupon code !</p>
+                        </div>
+                    </div>
+
+                    <div v-if="divcouponcodeafterapplying">
+                        <div>
+                            <div class="cc-div-remove">
+                                <p class="display-couponcode">Coupon code: {{ coupon }}</p>
+                                <button id="remove-button" class="remove-coupon-code" @click="removeCoupon">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Remove
                                 </button>
                             </div>
                         </div>
@@ -175,13 +205,18 @@
                 states: [],
                 selectedState: "",
                 cart: [],
-                couponFieldVisible: false,
                 inputsAddressVisible: false,
                 insideOrOutsideVisible: false,
 
-                selectedShippingMethod: "outside",
+                selectedShippingMethod: "Outside Beirut",
 
                 coupon: "",
+                divcouponcode: true,
+                divcouponcodeafterapplying: false,
+                couponFieldVisible: false,
+                invalidCouponCode: false,
+                couponcodediv: false,
+                totalWithCoupon: 0,
             };
         },
 
@@ -208,11 +243,11 @@
             shippingfee() {
                 let shippingCost = 0;
                 if (
-                    this.selectedShippingMethod === "default" ||
-                    this.selectedShippingMethod === "outside"
+                    this.selectedShippingMethod === "Inside Beirut" ||
+                    this.selectedShippingMethod === "Outside Beirut"
                 ) {
                     shippingCost = 3.0;
-                } else if (this.selectedShippingMethod === "express") {
+                } else if (this.selectedShippingMethod === "Same day delivery") {
                     shippingCost = 6.0;
                 }
                 return this.cart.reduce((total) => total, 0) + shippingCost;
@@ -221,11 +256,11 @@
             total() {
                 let shippingCost = 0;
                 if (
-                    this.selectedShippingMethod === "default" ||
-                    this.selectedShippingMethod === "outside"
+                    this.selectedShippingMethod === "Inside Beirut" ||
+                    this.selectedShippingMethod === "Outside Beirut"
                 ) {
                     shippingCost = 3.0;
-                } else if (this.selectedShippingMethod === "express") {
+                } else if (this.selectedShippingMethod === "Same day delivery") {
                     shippingCost = 6.0;
                 }
                 return (
@@ -235,6 +270,11 @@
                     ) + shippingCost
                 );
             },
+
+            // Update the total to consider the coupon discount
+            updatedTotal() {
+                return this.totalWithCoupon > 0 ? this.totalWithCoupon : this.total;
+            }
         },
 
         created() {
@@ -290,22 +330,46 @@
                         if (response.data && response.data.data.value) {
                             const discountPercentage = response.data.data.value;
 
-                            const discount = this.total * (discountPercentage / 100);
+                            // const discount = Math.round(this.subtotal * (discountPercentage / 100));
+                            const discount = parseFloat((this.subtotal * (discountPercentage / 100)).toFixed(2));
+
 
                             const newTotal = this.total - discount;
 
                             console.log("Discount applied:", discount);
                             console.log("New total after discount:", newTotal);
+
+                            // Set the applied coupon code to update the display
+                            this.coupon = couponCode;
+                            this.discountcoupon = discount;
+                            this.totalWithCoupon = this.total - discount;
+                            this.couponcodediv = true;
+                            this.divcouponcode = false;
+                            this.divcouponcodeafterapplying = true;
+
                         } else {
-                            //
+                            this.invalidCouponCode = true;
                         }
                     } else {
-                        //
+                        this.invalidCouponCode = true;
+
                     }
                 } catch (error) {
                     console.error("Error checking coupon:", error);
+                    this.invalidCouponCode = true;
                 }
             },
+
+            removeCoupon() {
+                this.coupon = "";
+                this.discountcoupon = 0;
+                this.totalWithCoupon = 0;
+                this.invalidCouponCode = false;
+                this.couponcodediv = false;
+                this.divcouponcode = true;
+                this.divcouponcodeafterapplying = false;
+                this.couponFieldVisible= false;
+            }
         },
     };
 </script>
@@ -604,6 +668,21 @@
             Noto Color Emoji;
     }
 
+    .quantity-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #737373;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        font-size: 14px;
+    }
+
+
     .checkout-size-color {
         font-size: 11px;
     }
@@ -647,6 +726,7 @@
         border: none;
         color: #17a2b8;
         cursor: pointer;
+        margin-top: 15px;
     }
 
     .coupon-code:hover {
@@ -682,5 +762,46 @@
         border-radius: 5px;
         font-size: 14px;
         cursor: pointer;
+    }
+
+    .invalid {
+        color: red;
+        display: flex;
+        text-align: start;
+        padding-left: 20px;
+    }
+
+    .cc-div-remove {
+        display: flex;
+        margin-top: 10px;
+        margin-left: 20px;
+        align-items: center;
+        border-top: 1px solid #ced4da;
+    }
+
+    .remove-coupon-code {
+        background-color: #ffc107;
+        color: black;
+        border-radius: 5px;
+        height: 45px;
+        border: none;
+        padding: 15px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .display-couponcode {
+        background-color: #d4edda;
+        color: green;
+        padding: 15px;
+        border-radius: 5px;
+        width: 250px;
+        padding-left: 7px;
+        border-radius: 5px;
+        margin-right: 50px;
+    }
+
+    .cc-div1{
+        border-top: 1px solid #ced4da;
     }
 </style>
