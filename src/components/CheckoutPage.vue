@@ -18,11 +18,14 @@
                         </select>
 
                         <div class="div-inputsAddress" id="new-address-form" v-show="inputsAddressVisible">
-                            <input type="text" id="name" placeholder="Full Name" class="input-full-name" />
+                            <input type="text" id="name" placeholder="Full Name" class="input-full-name"
+                                v-model="name" />
 
                             <div class="input-container">
-                                <input type="text" id="email" placeholder="Email" class="input-email" />
-                                <input type="text" id="phone" placeholder="Phone" class="input-phone" />
+                                <input type="text" id="email" placeholder="Email" class="input-email"
+                                    v-model="email" />
+                                <input type="text" id="phone" placeholder="Phone" class="input-phone"
+                                    v-model="phone" />
                             </div>
 
                             <select v-model="selectedCountry" @change="fetchStates" class="add-new-address">
@@ -39,9 +42,11 @@
                                         {{ state . name }}
                                     </option>
                                 </select>
-                                <input type="text" id="city" placeholder="City" class="input-phone" />
+                                <input type="text" id="city" placeholder="City" class="input-phone"
+                                    v-model="city" />
                             </div>
-                            <input type="text" id="address" placeholder="Address" class="input-full-name" />
+                            <input type="text" id="address" placeholder="Address" class="input-full-name"
+                                v-model="address" />
                         </div>
                     </div>
 
@@ -51,21 +56,22 @@
                             <input type="hidden" name="shipping_option" value="1" />
                             <ul class="shipping-method-ul">
                                 <li class="shipping-method-li" v-if="selectedState === 'Beirut Governorate'">
-                                    <input type="radio" name="shipping_method" id="shipping-method-1" value="Inside Beirut"
-                                        v-model="selectedShippingMethod" @change="updateSubtotal"
-                                        :checked="true" />
+                                    <input type="radio" name="shipping_method" id="shipping-method-1"
+                                        value="Inside Beirut" @change="updateSubtotal" :checked="true"
+                                        v-model="selectedShippingMethod" />
                                     <label for="shipping-method-1">Inside Beirut - $3.00</label>
                                 </li>
 
                                 <li class="shipping-method-li" v-if="selectedState === 'Beirut Governorate'">
-                                    <input type="radio" name="shipping_method" id="shipping-method-2" value="Same day delivery"
-                                        v-model="selectedShippingMethod" @change="updateSubtotal" />
+                                    <input type="radio" name="shipping_method" id="shipping-method-2"
+                                        value="Same day delivery" v-model="selectedShippingMethod"
+                                        @change="updateSubtotal" />
                                     <label for="shipping-method-2">Same day delivery (Beirut) - $6.00</label>
                                 </li>
 
                                 <li class="shipping-method-li-outside" v-else>
-                                    <input type="radio" name="shipping_method" id="shipping-method-3" value="Outside Beirut"
-                                        v-model="selectedShippingMethod" @change="updateSubtotal"
+                                    <input type="radio" name="shipping_method" id="shipping-method-3"
+                                        value="Outside Beirut" v-model="selectedShippingMethod" @change="updateSubtotal"
                                         :checked="true" />
                                     <label for="shipping-method-3">Outside Beirut - $3.00</label>
                                 </li>
@@ -80,13 +86,13 @@
                             <ul class="shipping-method-ul" aria-required="true">
                                 <li class="shipping-method-li">
                                     <input type="radio" name="pay_method" id="pay-method-1" value="stripe"
-                                        data-option="0" />
+                                        data-option="0" v-model="payment_channel" />
                                     <label for="pay-method-1"> Pay online via Stripe </label>
                                 </li>
 
                                 <li class="shipping-method-li">
                                     <input type="radio" name="pay_method" id="pay-method-2" value="cod"
-                                        data-option="1" />
+                                        data-option="1" v-model="payment_channel" />
                                     <label for="pay-method-2"> Cash on delivery (COD) </label>
                                 </li>
                             </ul>
@@ -102,14 +108,14 @@
                     <div class="final-checkout">
                         <a href="/cart" class="back-to-cart"><i class="fa-solid fa-arrow-left"></i> Back to
                             cart</a>
-                        <button class="btn-finalcheckout">Checkout</button>
+                        <button class="btn-finalcheckout" @click="checkout">Checkout</button>
                     </div>
                 </form>
             </div>
 
             <div class="second-column">
                 <p class="product">Product(s):</p>
-                <!-- ----------------------------------------------------------------- -->
+                <!-- ------------------------------------------------------------------>
                 <div class="panel-content">
                     <div v-for="(item, index) in cart" :key="index" class="checkout-item">
                         <div style="position: relative;">
@@ -125,8 +131,6 @@
                         </div>
                         <p class="checkout-price">${{ item . price }}</p>
                     </div>
-
-
 
                     <div class="div-subtotal">
                         <div class="subtotal">
@@ -164,12 +168,11 @@
                         <div :class="{ hidden: !couponFieldVisible }">
                             <div class="cc-div">
                                 <input type="text" ref="couponInput" placeholder="Enter coupon code"
-                                    class="input-coupon-code" />
+                                    class="input-coupon-code" v-model="coupon" />
                                 <button @click="applyCoupon" id="apply-button" class="button-coupon-code">
                                     <i class="fa-solid fa-gift"></i>
                                     Apply
                                 </button>
-
                             </div>
                             <p v-if="invalidCouponCode" class="invalid">Invalid or expired coupon code !</p>
                         </div>
@@ -208,7 +211,7 @@
                 inputsAddressVisible: false,
                 insideOrOutsideVisible: false,
 
-                selectedShippingMethod: "Outside Beirut",
+                selectedShippingMethod: "Inside Beirut",
 
                 coupon: "",
                 divcouponcode: true,
@@ -217,6 +220,19 @@
                 invalidCouponCode: false,
                 couponcodediv: false,
                 totalWithCoupon: 0,
+
+
+                name: '',
+                email: '',
+                phone: '',
+                city: '',
+                address: '',
+                // note: '',
+                currency: '',
+                payment_channel: '',
+
+
+
             };
         },
 
@@ -326,19 +342,20 @@
                     if (response.status === 200) {
                         this.coupon = couponCode;
 
+
+
                         // Check if the API response contains the discount value
                         if (response.data && response.data.data.value) {
                             const discountPercentage = response.data.data.value;
 
-                            // const discount = Math.round(this.subtotal * (discountPercentage / 100));
                             const discount = parseFloat((this.subtotal * (discountPercentage / 100)).toFixed(2));
-
 
                             const newTotal = this.total - discount;
 
                             console.log("Discount applied:", discount);
                             console.log("New total after discount:", newTotal);
 
+                            this.coupon_code = couponCode;
                             // Set the applied coupon code to update the display
                             this.coupon = couponCode;
                             this.discountcoupon = discount;
@@ -352,7 +369,6 @@
                         }
                     } else {
                         this.invalidCouponCode = true;
-
                     }
                 } catch (error) {
                     console.error("Error checking coupon:", error);
@@ -368,8 +384,70 @@
                 this.couponcodediv = false;
                 this.divcouponcode = true;
                 this.divcouponcodeafterapplying = false;
-                this.couponFieldVisible= false;
-            }
+                this.couponFieldVisible = false;
+            },
+
+
+            ////////////////////////////////////////////////////////////////
+            checkout() {
+
+                const products = this.cart.map(item => {
+                    return {
+                        product_id: item.id, 
+                        quantity: item.quantity,
+                    };
+                });
+
+                console.log("products:" , products);
+                const orderData = {
+
+
+                    products: products,
+
+                    currency: this.currency,
+                    payment_channel: this.payment_channel,
+                    coupon_code: this.coupon,
+                    shipping_method: this.selectedShippingMethod,
+
+
+                    name: this.name,
+                    email: this.email,
+                    city: this.city,
+                    address: this.address,
+                    phone: this.phone,
+                    country: this.selectedCountry,
+                    state: this.selectedState,
+
+                    // note: this.note,
+                };
+
+                console.log(orderData);
+
+                // Make a POST request to the API endpoint
+                fetch('http://127.0.0.1:8000/api/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData),
+                })
+
+                console.log("hellooo i am here")
+
+                    .then(response => {
+                        if (response.ok) {
+                            // Handle success response (e.g., show success message)
+                            console.log('Order placed successfully!');
+                        } else {
+                            // Handle error response (e.g., show error message)
+                            console.error('Failed to place order.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            },
+            /////////////////////////////////////////////////////////////////
         },
     };
 </script>
@@ -801,7 +879,7 @@
         margin-right: 50px;
     }
 
-    .cc-div1{
+    .cc-div1 {
         border-top: 1px solid #ced4da;
     }
 </style>
