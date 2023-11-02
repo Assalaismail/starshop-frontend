@@ -306,4 +306,16 @@ h1.cart {
   background-color: #737373;
   color: white;
 }
+
+@media screen and (max-width: 768px) {
+
+  h1.cart {
+  font-size: 25px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+}
+
+}
+
 </style>
